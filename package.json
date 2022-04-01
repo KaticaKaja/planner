@@ -1,0 +1,22 @@
+{
+  "name": "planner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaticaKaja/planner.git"
+  },
+  "author": "Katica Rankovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaticaKaja/planner/issues"
+  },
+  "homepage": "https://github.com/KaticaKaja/planner#readme",
+  "dependencies": {
+    "bootstrap-css-only": "^4.4.1"
+  }
+}
