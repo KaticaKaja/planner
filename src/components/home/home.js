@@ -1,4 +1,4 @@
-// import loadNotifications from "../../js/notifications";
+// import loadNotifications from "../../core/notifications";
 
 export default function load() {
     // loadNotifications();

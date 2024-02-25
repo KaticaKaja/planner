@@ -1,12 +1,12 @@
 const ROUTES = {
-    404: '/src/pages/404/404',
-    '/': '/src/pages/home/home',
-    '/calendar': '/src/pages/calendar/calendar',
-    '/login': '/src/pages/login/login',
-    '/register': '/src/pages/register/register',
-    '/notes': '/src/pages/notes/notes',
-    '/todo': '/src/pages/todo/todo',
-    '/finance': '/src/pages/finance/finance'
+    404: '/src/components/404/404',
+    '/': '/src/components/home/home',
+    '/calendar': '/src/components/calendar/calendar',
+    '/login': '/src/components/login/login',
+    '/register': '/src/components/register/register',
+    '/notes': '/src/components/notes/notes',
+    '/todo': '/src/components/todo/todo',
+    '/finance': '/src/components/finance/finance'
 };
 
 export function route(event) {

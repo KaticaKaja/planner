@@ -1,4 +1,4 @@
-import { makeTX, uid } from '../../js/db';
+import { makeTX, uid } from '../../core/db';
 import './register.scss';
 export default function load() {
     console.log('REGISTEER', document.getElementsByClassName('routing'));

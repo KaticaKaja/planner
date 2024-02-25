@@ -1,3 +1,4 @@
+let db = null;
 export const DB = {
     init: () => {
         const indexedDB =
@@ -6,7 +7,7 @@ export const DB = {
             window.webkitIndexedDB ||
             window.msIndexedDB ||
             window.shimIndexedDB;
-        let db = null;
+        // let db = null;
         let objectsStore = null;
         let DBOpenReq = indexedDB.open('PlannerDb', 1);
         if (DBOpenReq) {

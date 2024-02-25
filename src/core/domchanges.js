@@ -1,7 +1,7 @@
-import loadCalendar from '../pages/calendar/calendar';
-import loadHome from '../pages/home/home';
-import loadLogin from '../pages/login/login';
-import loadRegister from '../pages/register/register';
+import loadCalendar from '../components/calendar/calendar';
+import loadHome from '../components/home/home';
+import loadLogin from '../components/login/login';
+import loadRegister from '../components/register/register';
 import { route } from './router';
 
 const targetNode = document.getElementById('content');
@@ -34,37 +34,37 @@ observer.observe(targetNode, config);
 
 
 // if (window.location.pathname === '/login') {
-    //     loadScript('./src/pages/login/login.js', function () {
+    //     loadScript('./src/components/login/login.js', function () {
     //         console.log('LOGIN LOADED');
     //         console.log(Array.prototype.slice.call(document.scripts).map((s) => s.src));
     //         console.log(Array.prototype.slice.call(document.querySelectorAll('style')).map(s => s.dataset['viteDevId']));
     //         // removeStyle();
-    //         // addStyle('./src/pages/login/login.scss');
+    //         // addStyle('./src/components/login/login.scss');
     //     });
     // }
     // if (window.location.pathname === '/register') {
-    //     loadScript('./src/pages/register/register.js', function () {
+    //     loadScript('./src/components/register/register.js', function () {
     //         console.log('REGISTER LOADED');
     //         console.log(Array.prototype.slice.call(document.scripts).map((s) => s.src));
     //         console.log(Array.prototype.slice.call(document.querySelectorAll('style')).map(s => s.dataset['viteDevId']));
     //         // removeStyle();
-    //         // addStyle('./src/pages/login/login.scss');
+    //         // addStyle('./src/components/login/login.scss');
     //     });
     // }
     // if (window.location.pathname === '/home') {
-    //     loadScript('./src/pages/home/home.js', function () {
+    //     loadScript('./src/components/home/home.js', function () {
     //         console.log('HOME LOADED');
     //         // deloadScripts();
     //     });
     // }
     // if (window.location.pathname === '/notes') {
-    //     loadScript('./src/pages/notes/notes.js', function () {
+    //     loadScript('./src/components/notes/notes.js', function () {
     //         console.log('NOTES LOADED');
     //         // deloadScripts();
     //     });
     // }
     // if (window.location.pathname === '/calendar') {
-    //     loadScript('./src/pages/calendar/calendar.js', function () {
+    //     loadScript('./src/components/calendar/calendar.js', function () {
     //         console.log('CALENDAR LOADED');
     //         // deloadScripts();
     //     });

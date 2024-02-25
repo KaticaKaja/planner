@@ -2,7 +2,7 @@
   "name": "planner",
   "version": "1.0.0",
   "description": "This is my final ICT college project.",
-  "main": "/js/main.js",
+  "main": "/core/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
