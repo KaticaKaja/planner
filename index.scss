@@ -1,0 +1,73 @@
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: rgb(240, 236, 236) !important;
+    transition: background-color 5000s ease-in-out 0s!important;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    color: rgb(240, 236, 236);
+    font-family: "Shantell Sans", cursive;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+      "BNCE" 0,
+      "INFM" 0,
+      "SPAC" 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 100vw;
+    min-height: 100vh;
+    background-image: url('./src/assets/bg.webp');
+    background-size: cover;
+    background-position: top; //center
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    backdrop-filter: brightness(0.87) blur(1px);
+}
+
+#content {
+    margin: auto;
+    min-width: 350px;
+    min-height: 300px;
+    padding: 30px;
+    background-color: rgba(95, 160, 150, 0.8);
+    border-radius: 25px;
+}
+
+footer {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    #links {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+
+        i {
+            // color: rgb(95, 158, 160);
+            color: rgba(95, 160, 150);
+            font-size: 30px;
+            vertical-align: sub;
+        }
+    }
+
+    #copy {
+        font-size: 12px;
+    }
+}

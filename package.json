@@ -1,0 +1,26 @@
+{
+  "name": "planner",
+  "version": "1.0.0",
+  "description": "This is my final ICT college project.",
+  "main": "/js/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "vanilla",
+    "js",
+    "spa",
+    "planner"
+  ],
+  "author": "Katica Rankovic",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.71.0",
+    "vite": "^5.1.3"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.1"
+  }
+}
