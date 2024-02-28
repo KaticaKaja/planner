@@ -46,7 +46,12 @@ body {
 footer {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    padding: 5px;
+    padding: 5px 0px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -69,5 +74,14 @@ footer {
 
     #copy {
         font-size: 12px;
+        text-align: center;
     }
+}
+
+.show {
+    display: block;
+}
+
+.noshow {
+    display: none!important;
 }

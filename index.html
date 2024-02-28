@@ -3,19 +3,43 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/planning.svg" />
+    <link rel="icon" type="image/svg+xml" href="./src/assets/planner.png"/>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
-        rel="stylesheet" />
+        rel="stylesheet"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(95, 160, 150, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: rgb(240, 236, 236);
+            font-family: "Shantell Sans", cursive;
+            font-size: larger;
+            font-optical-sizing: auto;
+            font-weight: 300;
+            font-style: normal;
+            font-variation-settings:
+            "BNCE" 0,
+            "INFM" 0,
+            "SPAC" 0;
+        }
+    </style>
     <title>My App</title>
 </head>
 
 <body>
-    <header></header>
-    <div id="content"></div>
-    <footer>
+    <header style="visibility: hidden;"></header>
+    <main id="content" style="visibility: hidden; opacity: 0; transition: all 1s;"></main>
+    <footer style="visibility: hidden;">
         <div id="links">
             <div>See the project source code here <a href="https://github.com/KaticaKaja/Movie-Review"
                     target="_blank"><i class="fa-brands fa-github"></i></a></div>
@@ -24,6 +48,7 @@
         </div>
         <div id="copy">Katica Rankovic &copy; <span id="date">2024</span></div>
     </footer>
+    <div id="loading">Loading...</div>
     <script type="module" src="./index.js"></script>
 </body>
 
