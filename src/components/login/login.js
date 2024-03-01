@@ -1,14 +1,25 @@
 import './login.scss';
+import { state } from '../../core/state.js';
 export default function load() {
-    // if (document.getElementById('login')) {
-        document.getElementById('username').addEventListener('click', showMe);
-        // document.querySelector('h1').style.color = 'red';
-    // }
+    loadState();
+    document.login.addEventListener('change', getValue);
 }
 
-function showMe() {
-    console.log('clicked');
-    // document.getElementById('continue').style.backgroundColor = 'blue';
+function loadState() {
+    document.getElementById('username').value = state.login.user?.username || '';
+    document.getElementById('password').value = state.login.user?.password || '';
 }
 
-console.log('');
+function getValue() {
+    let username = document.getElementById('username').value.trim();
+    let password = document.getElementById('password').value.trim();
+
+    let user = {
+        username,
+        password
+    };
+
+    state.login.user = user;
+
+    return user;
+}
