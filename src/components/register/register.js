@@ -20,6 +20,7 @@ function validatedUser(ev) {
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
     let confirmpassword = document.getElementById('confirmpassword').value.trim();
+    let failed = false;
 
     let user = {
         username,
@@ -37,24 +38,28 @@ function validatedUser(ev) {
     if (username && !usernameRegex.test(user.username)) {
         document.querySelector('#username').nextElementSibling.nextElementSibling.innerHTML = 'Invalid username. At least 3 characters, you can use letters, numbers and underscore';
         document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
+        failed = true;
     } else {
         document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
     if (email && !emailRegex.test(user.email)) {
         document.querySelector('#email').nextElementSibling.nextElementSibling.innerHTML = 'Invalid email.';
         document.querySelector('#email').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
+        failed = true;
     } else {
         document.querySelector('#email').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
     if (password && !passwordRegex.test(user.password)) {
         document.querySelector('#password').nextElementSibling.nextElementSibling.innerHTML = 'Invalid password. At least one letter, one digit, and one special character from the set @$!%^&*()_+={}[\]:;<>,.?~\\/-]';
         document.querySelector('#password').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
+        failed = true;
     } else {
         document.querySelector('#password').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
     if (user.password !== user.confirmpassword) {
         document.querySelector('#confirmpassword').nextElementSibling.nextElementSibling.innerHTML = 'Passwords do not match.';
         document.querySelector('#confirmpassword').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
+        failed = true;
     } else {
         document.querySelector('#confirmpassword').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
@@ -65,6 +70,12 @@ function validatedUser(ev) {
         else document.getElementById(ev.target.id).classList.remove('error');
     }
 
+    if (failed) return {
+        username: '',
+        email: '',
+        password: '',
+        confirmpassword: ''
+    };
     user.id = uid();
     return user;
 }
