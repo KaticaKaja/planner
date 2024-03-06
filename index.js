@@ -5,9 +5,13 @@ import './src/core/domchanges.js';
 
 DB.init();
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
+    loading();
+});
+
+function loading() {
+    let loadingOverlay = document.getElementById('loading');
     setTimeout(() => {
-        var loadingOverlay = document.getElementById('loading');
         loadingOverlay.style.display = 'none';
         document.querySelector('header').style.visibility = 'visible';
         document.querySelector('main').style.visibility = 'visible';
@@ -15,4 +19,4 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('footer').style.visibility = 'visible';
         document.querySelector('footer').style.transform = "translateY(0)";
     }, 500);
-});
+}
