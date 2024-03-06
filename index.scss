@@ -4,6 +4,12 @@ input:-webkit-autofill {
     -webkit-text-fill-color: rgb(240, 236, 236) !important;
     transition: background-color 5000s ease-in-out 0s!important;
 }
+input:-moz-autofill {
+    transition: background-color 5000s ease-in-out 0s!important;
+}
+input:-ms-autofill {
+    transition: background-color 5000s ease-in-out 0s!important;
+}
 
 * {
     padding: 0;
