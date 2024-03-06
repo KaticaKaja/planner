@@ -15,7 +15,6 @@ function loadState() {
     document.getElementById('confirmpassword').value = state.register.user?.confirmpassword || '';
 }
 function validatedUser(ev) {
-    console.log('CHANGE EVENT ON FORM', ev);
     let username = document.getElementById('username').value.trim();
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
@@ -70,12 +69,7 @@ function validatedUser(ev) {
         else document.getElementById(ev.target.id).classList.remove('error');
     }
 
-    if (failed) return {
-        username: '',
-        email: '',
-        password: '',
-        confirmpassword: ''
-    };
+    user.failed = failed;
     user.id = uid();
     return user;
 }
@@ -89,6 +83,7 @@ function onRegister(ev) {
     // toast for successful registration and go to login
     // notifications.show({ type: 'success', position: 'topcenter', message: 'You are successfully registered, now login to your account', duration: 2000 , closable: false })
     delete state.register.user;
+    delete user.failed;
     addUser(user);
 }
 
@@ -102,7 +97,7 @@ function requiredFields(user) {
     else document.getElementById('password').classList.remove('error');
     if (!user.confirmpassword) document.getElementById('confirmpassword').classList.add('error');
     else document.getElementById('confirmpassword').classList.remove('error');
-    if (!user.username || !user.email || !user.password || !user.confirmpassword) return false;
+    if (!user.username || !user.email || !user.password || !user.confirmpassword || user.failed) return false;
     return true;
 }
 
