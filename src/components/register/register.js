@@ -1,4 +1,4 @@
-import { makeTX, uid } from '../../core/db.js';
+import { DB, uid } from '../../core/db.js';
 import './register.scss';
 import { state } from '../../core/state.js';
 import { navigate } from '../../core/router.js';
@@ -74,17 +74,38 @@ function validatedUser(ev) {
     return user;
 }
 
-function onRegister(ev) {
+async function onRegister(ev) {
     ev.preventDefault();
+    let users = [];
+    try {
+        users = await DB.getAll('users')
+    } catch (error) {
+        // toast notification for this error
+        console.log('[' + error.name + '] ' + error.message);
+    }
     let user = validatedUser();
     if (!requiredFields(user)) return;
-    // check if there is a user with the same email or username (email and username are unique) !!!!!!
-
-    // toast for successful registration and go to login
-    // notifications.show({ type: 'success', position: 'topcenter', message: 'You are successfully registered, now login to your account', duration: 2000 , closable: false })
     delete state.register.user;
     delete user.failed;
-    addUser(user);
+    if (users.some((u) => u.email === user.email)) {
+        console.log('User with this email already exists, try to login');
+        navigate('/login');
+        //toast notification existing user, go to login
+        return;
+    }
+    if (users.some((u) => u.username === user.username)) {
+        console.log('This username is taken');
+        //toast notification existing username
+        return;
+    }
+    DB.add('users', user).then((ev) => {
+        console.log('Add user event:');
+        console.log(ev);
+        navigate('/login');
+    }).catch((err) => {
+        console.log('Error on user add event: '+ err);
+        // toast notification for this error
+    });
 }
 
 function requiredFields(user) {
@@ -99,24 +120,4 @@ function requiredFields(user) {
     else document.getElementById('confirmpassword').classList.remove('error');
     if (!user.username || !user.email || !user.password || !user.confirmpassword || user.failed) return false;
     return true;
-}
-
-function addUser(user) {
-    let tx = makeTX('users', 'readwrite');
-
-    tx.oncomplete = (ev) => {
-        console.log(ev);
-    };
-
-    let store = tx.objectStore('users');
-    let request = store.add(user);
-
-    request.onsuccess = (ev) => {
-        console.log('successfully added new user');
-        navigate('/login');
-    };
-    request.onerror = (err) => {
-        console.log('error in request to add user');
-        //toast for an error with indexedDB
-    };
 }

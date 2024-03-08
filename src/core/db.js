@@ -7,20 +7,18 @@ export const DB = {
             window.webkitIndexedDB ||
             window.msIndexedDB ||
             window.shimIndexedDB;
-        // let db = null;
         let objectsStore = null;
-        let DBOpenReq = indexedDB.open('PlannerDb', 1);
+        let DBOpenReq = indexedDB.open('PlannerDb', 4);
         if (DBOpenReq) {
-            DBOpenReq.addEventListener('error', (err) => {
+            DBOpenReq.onerror = (err) => {
                 console.warn('error while trying to open db', err);
-            });
+            }
 
-            DBOpenReq.addEventListener('success', (ev) => {
+            DBOpenReq.onsuccess = (ev) => {
                 db = ev.target.result;
                 console.log('success');
-            });
-
-            DBOpenReq.addEventListener('upgradeneeded', (ev) => {
+            }
+            DBOpenReq.onupgradeneeded = (ev) => {
                 //first time opening this DB
                 //OR a new version was passed into open()
                 db = ev.target.result;
@@ -30,28 +28,74 @@ export const DB = {
 
                 console.log('upgrade', db);
                 if (!db.objectStoreNames.contains('users')) {
-                objectsStore = db.createObjectStore('users', {
-                    keyPath: 'id',
-                });
+                    objectsStore = db.createObjectStore('users', {
+                        keyPath: 'id',
+                    });
                 }
-                // db.deleteObjectStore('foobar');
-
-            });
+                if (!db.objectStoreNames.contains('notes')) {
+                    objectsStore = db.createObjectStore('notes', {
+                        keyPath: 'id',
+                    });
+                }
+                if (!db.objectStoreNames.contains('todos')) {
+                    objectsStore = db.createObjectStore('todos', {
+                        keyPath: 'id',
+                    });
+                }
+                if (!db.objectStoreNames.contains('events')) {
+                    objectsStore = db.createObjectStore('events', {
+                        keyPath: 'id',
+                    });
+                }
+                console.log('on upgrade finished')
+            }
         }
-        // let tx = makeTX('users', 'readwrite');
+    },
+    add: (table, data) => {
+        return new Promise((resolve, reject) => {
+            let tx = makeTX(table, 'readwrite');
 
-        // tx.oncomplete = (ev) => {
-        //     console.log(ev);
-        //     //buildList()
-        // };
+            tx.oncomplete = (ev) => {
+                console.info(ev);
+            };
+            let store = tx.objectStore(table);
+            let request = store.add(data);
+
+            request.onsuccess = (ev) => {
+                resolve(ev);
+            };
+
+            request.onerror = (err) => {
+                reject('There was an error while adding data to ' + table + ' table.');
+            }
+        });
+    },
+    getAll: (table, query = undefined) => {
+        return new Promise((resolve, reject) => {
+            let tx = makeTX(table, 'readonly');
+
+            tx.oncomplete = (ev) => {
+                console.info(ev);
+            };
+            let store = tx.objectStore(table);
+            let request = store.getAll(query);
+            let result = [];
+            request.onsuccess = (ev) => {
+                resolve(ev.target.result);
+            }
+            request.onerror = (err) => {
+                reject('There was an error while adding data to ' + table + ' table.');
+            }
+            return result;
+        });
     }
 }
 
-export function makeTX(storeName, mode) {
+function makeTX(storeName, mode) {
     if (!db) return;
     let tx = db.transaction(storeName, mode);
     tx.onerror = (err) => {
-      console.warn(err);
+      console.warn(err.target.error);
     };
     return tx;
 }
