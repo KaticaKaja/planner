@@ -1,32 +1,56 @@
-let db = null;
 export const DB = {
-    init: () => {
-        const indexedDB =
-            window.indexedDB ||
-            window.mozIndexedDB ||
-            window.webkitIndexedDB ||
-            window.msIndexedDB ||
-            window.shimIndexedDB;
+    open: (version = undefined) => {
+        return new Promise((resolve, reject) => {
+            const indexedDB =
+                window.indexedDB ||
+                window.mozIndexedDB ||
+                window.webkitIndexedDB ||
+                window.msIndexedDB ||
+                window.shimIndexedDB;
+            if (!indexedDB) {
+                reject(new Error('IndexedDB not supported'));
+                return;
+            }
+            let DBOpenReq = indexedDB.open('PlannerDb', version);
+            if (version) {
+                resolve(DBOpenReq);
+                return;
+            }
+            DBOpenReq.onsuccess = (ev) => {
+                resolve(ev.target.result);
+            }
+            DBOpenReq.onerror = (err) => {
+                reject(err);
+            }
+        });
+    },
+    init: async () => {
         let objectsStore = null;
-        let DBOpenReq = indexedDB.open('PlannerDb', 4);
+        let db = null;
+        try {
+            let DBOpenReq = await DB.open(1);
         if (DBOpenReq) {
             DBOpenReq.onerror = (err) => {
-                console.warn('error while trying to open db', err);
+                console.warn('error while trying to open db on init', err);
+                // toast notification for trying to open db on init
             }
 
             DBOpenReq.onsuccess = (ev) => {
                 db = ev.target.result;
-                console.log('success');
+                console.log('db init successful');
+                db.close();
             }
             DBOpenReq.onupgradeneeded = (ev) => {
                 //first time opening this DB
                 //OR a new version was passed into open()
                 db = ev.target.result;
+                db.onerror = () => {
+                    console.log('error on loading of db');
+                    //toast notification
+                }
                 let oldVersion = ev.oldVersion;
                 let newVersion = ev.newVersion || db.version;
-                console.log('DB updated from version', oldVersion, 'to', newVersion);
 
-                console.log('upgrade', db);
                 if (!db.objectStoreNames.contains('users')) {
                     objectsStore = db.createObjectStore('users', {
                         keyPath: 'id',
@@ -47,17 +71,20 @@ export const DB = {
                         keyPath: 'id',
                     });
                 }
-                console.log('on upgrade finished')
+
+                console.log('DB updated from version', oldVersion, 'to', newVersion);
+                console.log('upgrade', db);
             }
         }
+        } catch (error) {
+            //toast notification for error on DB open
+        }
+
     },
     add: (table, data) => {
-        return new Promise((resolve, reject) => {
-            let tx = makeTX(table, 'readwrite');
-
-            tx.oncomplete = (ev) => {
-                console.info(ev);
-            };
+        return new Promise(async (resolve, reject) => {
+            let tx = await makeTX(table, 'readwrite');
+            //if there is a necessity for a specific action on complete, move tx.oncompletete here
             let store = tx.objectStore(table);
             let request = store.add(data);
 
@@ -71,33 +98,38 @@ export const DB = {
         });
     },
     getAll: (table, query = undefined) => {
-        return new Promise((resolve, reject) => {
-            let tx = makeTX(table, 'readonly');
-
-            tx.oncomplete = (ev) => {
-                console.info(ev);
-            };
+        return new Promise(async (resolve, reject) => {
+            let tx = await makeTX(table, 'readonly');
+            //if there is a necessity for a specific action on complete, move tx.oncompletete here
             let store = tx.objectStore(table);
             let request = store.getAll(query);
-            let result = [];
             request.onsuccess = (ev) => {
                 resolve(ev.target.result);
             }
             request.onerror = (err) => {
                 reject('There was an error while adding data to ' + table + ' table.');
             }
-            return result;
         });
     }
 }
 
-function makeTX(storeName, mode) {
-    if (!db) return;
-    let tx = db.transaction(storeName, mode);
-    tx.onerror = (err) => {
-      console.warn(err.target.error);
-    };
-    return tx;
+async function makeTX(storeName, mode) {
+    try {
+        const db = await DB.open();
+        if (!db) return;
+        let tx = db.transaction(storeName, mode);
+        tx.oncomplete = (ev) => {
+            console.info('Transaction complete: ', ev);
+            tx.db.close();
+        };
+        tx.onerror = (err) => {
+            console.warn(err.target.error);
+        };
+        return tx;
+    } catch (error) {
+        console.warn(error);
+        // toast notification for failed DB open, please try later...
+    }
 }
 
 export const uid = () => {

@@ -99,8 +99,8 @@ async function onRegister(ev) {
         return;
     }
     DB.add('users', user).then((ev) => {
-        console.log('Add user event:');
-        console.log(ev);
+        console.log('Add user event:', ev.target.result);
+        // toast notification for successful registration
         navigate('/login');
     }).catch((err) => {
         console.log('Error on user add event: '+ err);
