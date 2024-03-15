@@ -77,16 +77,14 @@ function validatedUser(ev) {
 async function onRegister(ev) {
     ev.preventDefault();
     let users = [];
+    let user = validatedUser();
+    if (!requiredFields(user)) return;
     try {
         users = await DB.getAll('users')
     } catch (error) {
         // toast notification for this error
         console.log('[' + error.name + '] ' + error.message);
     }
-    let user = validatedUser();
-    if (!requiredFields(user)) return;
-    delete state.register.user;
-    delete user.failed;
     if (users.some((u) => u.email === user.email)) {
         console.log('User with this email already exists, try to login');
         navigate('/login');
@@ -98,6 +96,8 @@ async function onRegister(ev) {
         //toast notification existing username
         return;
     }
+    delete state.register.user;
+    delete user.failed;
     DB.add('users', user).then((ev) => {
         console.log('Add user event:', ev.target.result);
         // toast notification for successful registration
