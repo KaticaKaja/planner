@@ -1,7 +1,9 @@
 import { DB, uid } from '../../core/db.js';
 import './register.scss';
 import { state } from '../../core/state.js';
+import Toastify from 'toastify-js'
 import { navigate } from '../../core/router.js';
+
 export default function load() {
     loadState();
     document.register.addEventListener('submit', onRegister);
@@ -14,7 +16,8 @@ function loadState() {
     document.getElementById('password').value = state.register.user?.password || '';
     document.getElementById('confirmpassword').value = state.register.user?.confirmpassword || '';
 }
-function validatedUser(ev) {
+async function validatedUser(ev) {
+    let users = [];
     let username = document.getElementById('username').value.trim();
     let email = document.getElementById('email').value.trim();
     let password = document.getElementById('password').value.trim();
@@ -39,6 +42,48 @@ function validatedUser(ev) {
         document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
         failed = true;
     } else {
+        try {
+            users = await DB.getAll('users')
+        } catch (error) {
+            Toastify({
+                text: "There was an error on our end, try again later.",
+                duration: 3000,
+                // destination: "https://github.com/apvarun/toastify-js",
+                // newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                }
+              }).showToast();
+            console.log('[' + error.name + '] ' + error.message);
+        }
+        if (users.some((u) => u.email === user.email)) {
+            // navigate('/login');
+            Toastify({
+                text: "This user already exists. Try login, click here",
+                duration: 3000,
+                destination: "/login",
+                newWindow: false,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+              }).showToast();
+              delete state.register.user;
+            return;
+        }
+        if (users.some((u) => u.username === user.username)) {
+            document.querySelector('#username').nextElementSibling.nextElementSibling.innerHTML = 'This username is taken';
+            document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
+            failed = true;
+            return;
+        }
         document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
     if (email && !emailRegex.test(user.email)) {
@@ -49,7 +94,7 @@ function validatedUser(ev) {
         document.querySelector('#email').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
     if (password && !passwordRegex.test(user.password)) {
-        document.querySelector('#password').nextElementSibling.nextElementSibling.innerHTML = 'Invalid password. At least one letter, one digit, and one special character from the set @$!%^&*()_+={}[\]:;<>,.?~\\/-]';
+        document.querySelector('#password').nextElementSibling.nextElementSibling.innerHTML = 'Invalid password. Min length 8 characters, at least one letter, one digit, and one special character from the set @$!%^&*()_+={}[\]:;<>,.?~\\/-]';
         document.querySelector('#password').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
         failed = true;
     } else {
@@ -76,40 +121,52 @@ function validatedUser(ev) {
 
 async function onRegister(ev) {
     ev.preventDefault();
-    let users = [];
-    let user = validatedUser();
+    let user = await validatedUser();
     if (!requiredFields(user)) return;
-    try {
-        users = await DB.getAll('users')
-    } catch (error) {
-        // toast notification for this error
-        console.log('[' + error.name + '] ' + error.message);
-    }
-    if (users.some((u) => u.email === user.email)) {
-        console.log('User with this email already exists, try to login');
-        navigate('/login');
-        //toast notification existing user, go to login
-        return;
-    }
-    if (users.some((u) => u.username === user.username)) {
-        console.log('This username is taken');
-        //toast notification existing username
-        return;
-    }
     delete state.register.user;
     delete user.failed;
     DB.add('users', user).then((ev) => {
         console.log('Add user event:', ev.target.result);
-        // toast notification for successful registration
-        navigate('/login');
+        Toastify({
+            text: "You are successfully registered!",
+            duration: 3000,
+            // destination: "https://github.com/apvarun/toastify-js",
+            // newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+            onClick: function(){
+                console.log('klik na notifikaciju !!!!!!!');
+            } // Callback after click
+          }).showToast();
     }).catch((err) => {
         console.log('Error on user add event: '+ err);
-        // toast notification for this error
+        Toastify({
+            text: "Try again later, there was a problem on our end.",
+            duration: 3000,
+            // destination: "https://github.com/apvarun/toastify-js",
+            // newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+            },
+            onClick: function(){
+            } // Callback after click
+          }).showToast();
     });
+    navigate('/login');
 }
 
 function requiredFields(user) {
     // check required fields
+    if (!user) return false;
     if (!user.username) document.getElementById('username').classList.add('error');
     else document.getElementById('username').classList.remove('error');
     if (!user.email) document.getElementById('email').classList.add('error');

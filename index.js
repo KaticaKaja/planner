@@ -1,4 +1,6 @@
 import './index.scss';
+import "toastify-js/src/toastify.css"
+
 import { DB } from './src/core/db.js';
 import './src/core/router.js';
 import './src/core/domchanges.js';
