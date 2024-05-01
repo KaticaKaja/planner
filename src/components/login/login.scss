@@ -1,5 +1,5 @@
-$primary:rgb(139, 211, 140); //rgba(85, 135, 128, 0.7);
-$secondary: rgb(240, 236, 236); // rgba(85, 135, 128, 0.7);
+$primary:rgb(139, 211, 140);
+$secondary: rgb(240, 236, 236);
 
 
 
@@ -77,6 +77,18 @@ $secondary: rgb(240, 236, 236); // rgba(85, 135, 128, 0.7);
             font-size: 16px;
             color: rgb(240, 236, 236);
         }
+
+        .form_input_error_message {
+            overflow: hidden;
+            width: inherit;
+            max-height: 0;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgb(204, 0, 0);
+            padding-top: 5px;
+            transition: all 0.5s ease;
+        }
     }
 
     #continue {
@@ -91,5 +103,9 @@ $secondary: rgb(240, 236, 236); // rgba(85, 135, 128, 0.7);
         font-size: 16px;
         margin: 10px;
         cursor: pointer;
+    }
+
+    .error {
+        border-color: rgb(204, 0, 0)!important;
     }
 }

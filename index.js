@@ -7,7 +7,7 @@ import './src/core/domchanges.js';
 
 DB.init();
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
     loading();
 });
 
@@ -15,7 +15,7 @@ function loading() {
     let loadingOverlay = document.getElementById('loading');
     setTimeout(() => {
         loadingOverlay.style.display = 'none';
-        document.querySelector('header').style.visibility = 'visible';
+        // document.querySelector('header').style.visibility = 'visible';
         document.querySelector('main').style.visibility = 'visible';
         document.querySelector('main').style.opacity = '1';
         document.querySelector('footer').style.visibility = 'visible';

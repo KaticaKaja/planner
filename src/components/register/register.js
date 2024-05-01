@@ -48,8 +48,6 @@ async function validatedUser(ev) {
             Toastify({
                 text: "There was an error on our end, try again later.",
                 duration: 3000,
-                // destination: "https://github.com/apvarun/toastify-js",
-                // newWindow: true,
                 close: true,
                 gravity: "top", // `top` or `bottom`
                 position: "right", // `left`, `center` or `right`
@@ -57,7 +55,7 @@ async function validatedUser(ev) {
                 style: {
                   background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
                 }
-              }).showToast();
+            }).showToast();
             console.log('[' + error.name + '] ' + error.message);
         }
         if (users.some((u) => u.email === user.email)) {
@@ -130,36 +128,27 @@ async function onRegister(ev) {
         Toastify({
             text: "You are successfully registered!",
             duration: 3000,
-            // destination: "https://github.com/apvarun/toastify-js",
-            // newWindow: true,
             close: true,
             gravity: "top", // `top` or `bottom`
             position: "right", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
               background: "linear-gradient(to right, #00b09b, #96c93d)",
-            },
-            onClick: function(){
-                console.log('klik na notifikaciju !!!!!!!');
-            } // Callback after click
-          }).showToast();
+            }
+        }).showToast();
     }).catch((err) => {
         console.log('Error on user add event: '+ err);
         Toastify({
             text: "Try again later, there was a problem on our end.",
             duration: 3000,
-            // destination: "https://github.com/apvarun/toastify-js",
-            // newWindow: true,
             close: true,
             gravity: "top", // `top` or `bottom`
             position: "right", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
               background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
-            },
-            onClick: function(){
-            } // Callback after click
-          }).showToast();
+            }
+        }).showToast();
     });
     navigate('/login');
 }

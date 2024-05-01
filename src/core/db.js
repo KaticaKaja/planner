@@ -1,5 +1,5 @@
 export const DB = {
-    open: (version = undefined) => {
+    open: (username = undefined, version = undefined) => {
         return new Promise((resolve, reject) => {
             const indexedDB =
                 window.indexedDB ||
@@ -11,33 +11,36 @@ export const DB = {
                 reject(new Error('IndexedDB not supported'));
                 return;
             }
-            let DBOpenReq = indexedDB.open('PlannerDb', version);
+            let DBOpenReq = indexedDB.open(username ? `userDB_${username}` : 'PlannerDb', version);
+            console.log('OPEN DB', DBOpenReq);
             if (version) {
                 resolve(DBOpenReq);
                 return;
             }
-            DBOpenReq.onsuccess = (ev) => {
-                resolve(ev.target.result);
+            DBOpenReq.onsuccess = (event) => {
+                resolve(event.target.result);
+
             }
-            DBOpenReq.onerror = (err) => {
-                reject(err);
+            DBOpenReq.onerror = (event) => {
+                reject(event.target.error);
             }
         });
     },
-    init: async () => {
+    init: async (username = undefined) => {
         let objectsStore = null;
         let db = null;
         try {
-            let DBOpenReq = await DB.open(1);
+            console.log('username', username);
+            let DBOpenReq = await DB.open(username, 1);
         if (DBOpenReq) {
-            DBOpenReq.onerror = (err) => {
-                console.warn('error while trying to open db on init', err);
-                // toast notification for trying to open db on init
+            DBOpenReq.onerror = (event) => {
+                console.log(event);
+                console.error(`Error opening database ${username ? ('for user ' + username) : 'PlannerDb'}: `, event.target.error);
             }
 
             DBOpenReq.onsuccess = (ev) => {
                 db = ev.target.result;
-                console.log('db init successful');
+                console.log(`Database ${username ? ('for user ' + username) : 'PlannerDb'} opened successfully`);
                 db.close();
             }
             DBOpenReq.onupgradeneeded = (ev) => {
@@ -45,31 +48,54 @@ export const DB = {
                 //OR a new version was passed into open()
                 db = ev.target.result;
                 db.onerror = () => {
-                    console.log('error on loading of db');
-                    //toast notification
+                    console.error('error on loading of db');
                 }
                 let oldVersion = ev.oldVersion;
                 let newVersion = ev.newVersion || db.version;
 
-                if (!db.objectStoreNames.contains('users')) {
-                    objectsStore = db.createObjectStore('users', {
-                        keyPath: 'id',
-                    });
+                if (!username) {
+                    if (!db.objectStoreNames.contains('users')) {
+                        objectsStore = db.createObjectStore('users', {
+                            keyPath: 'id',
+                        });
+                    }
                 }
-                if (!db.objectStoreNames.contains('notes')) {
-                    objectsStore = db.createObjectStore('notes', {
-                        keyPath: 'id',
-                    });
-                }
-                if (!db.objectStoreNames.contains('todos')) {
-                    objectsStore = db.createObjectStore('todos', {
-                        keyPath: 'id',
-                    });
-                }
-                if (!db.objectStoreNames.contains('events')) {
-                    objectsStore = db.createObjectStore('events', {
-                        keyPath: 'id',
-                    });
+                else {
+                    if (!db.objectStoreNames.contains('notes')) {
+                        objectsStore = db.createObjectStore('notes', {
+                            keyPath: 'id',
+                        });
+                    }
+                    if (!db.objectStoreNames.contains('todos')) {
+                        objectsStore = db.createObjectStore('todos', {
+                            keyPath: 'id',
+                        });
+                    }
+                    if (!db.objectStoreNames.contains('events')) {
+                        objectsStore = db.createObjectStore('events', {
+                            keyPath: 'id',
+                        });
+                    }
+                    if (!db.objectStoreNames.contains('budget')) {
+                        objectsStore = db.createObjectStore('budget', {
+                            keyPath: 'id',
+                        });
+                    }
+                    if (!db.objectStoreNames.contains('expense_categories')) {
+                        objectsStore = db.createObjectStore('expense_categories', {
+                            keyPath: 'id',
+                        });
+                    }
+                    if (!db.objectStoreNames.contains('income')) {
+                        objectsStore = db.createObjectStore('income', {
+                            keyPath: 'id',
+                        });
+                    }
+                    if (!db.objectStoreNames.contains('expenses')) {
+                        objectsStore = db.createObjectStore('expenses', {
+                            keyPath: 'id',
+                        });
+                    }
                 }
 
                 console.log('DB updated from version', oldVersion, 'to', newVersion);
@@ -77,13 +103,13 @@ export const DB = {
             }
         }
         } catch (error) {
-            //toast notification for error on DB open
+            console.error(error);
         }
 
     },
-    add: (table, data) => {
+    add: (table, data, username = undefined) => {
         return new Promise(async (resolve, reject) => {
-            let tx = await makeTX(table, 'readwrite');
+            let tx = await makeTX(username, table, 'readwrite');
             //if there is a necessity for a specific action on complete, move tx.oncompletete here
             let store = tx.objectStore(table);
             let request = store.add(data);
@@ -97,9 +123,9 @@ export const DB = {
             }
         });
     },
-    getAll: (table, query = undefined) => {
+    getAll: (table, query = undefined, username = undefined) => {
         return new Promise(async (resolve, reject) => {
-            let tx = await makeTX(table, 'readonly');
+            let tx = await makeTX(username, table, 'readonly');
             //if there is a necessity for a specific action on complete, move tx.oncompletete here
             let store = tx.objectStore(table);
             let request = store.getAll(query);
@@ -113,9 +139,9 @@ export const DB = {
     }
 }
 
-async function makeTX(storeName, mode) {
+async function makeTX(username, storeName, mode) {
     try {
-        const db = await DB.open();
+        const db = await DB.open(username);
         if (!db) return;
         let tx = db.transaction(storeName, mode);
         tx.oncomplete = (ev) => {
@@ -128,7 +154,6 @@ async function makeTX(storeName, mode) {
         return tx;
     } catch (error) {
         console.warn(error);
-        // toast notification for failed DB open, please try later...
     }
 }
 
