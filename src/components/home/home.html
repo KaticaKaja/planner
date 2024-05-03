@@ -1,20 +1,20 @@
-<h1>HOME</h1>
+<div id="home">
+    <div id="auth" class="noshow">
+        <h1>Welcome, <span id="user"></span></h1>
+        <div class="buttons">
+            <a data-route href="/notes">Notes</a>
+            <a data-route href="/todo">ToDos</a>
+            <a data-route href="/calendar">Calendar</a>
+            <a data-route href="/finance">Finance</a>
+            <a data-route href="/login" id="logout">Logout</a>
+        </div>
+    </div>
 
-<nav id="auth" style="display: none;">
-    When logged in look
-    <ul class="nav">
-        <li><a data-route href="/notes">Notes</a></li>
-        <li><a data-route href="/todo">ToDos</a></li>
-        <li><a data-route href="/calendar">Calendar</a></li>
-        <li><a data-route href="/finance">Finance</a></li>
-        <li><a data-route href="/login" id="logout">Logout</a></li>
-        <!-- <li><a data-route href="/login">Login</a></li>
-        <li><a data-route href="/register">Register</a></li> -->
-    </ul>
-</nav>
-
-<div id="noauth" style="display: block;">
-    <h1>When not logged in look</h1>
-    <a data-route href="/register" data-register>Register if you don't have an account yet</a>
-    <a data-route href="/login" data-login>Or login</a>
+    <div id="noauth" class="show">
+        <h1>Welcome to Planner app</h1>
+        <div class="buttons">
+            <a data-route href="/register" data-register>Register an account</a>
+            <a data-route href="/login" data-login>Sign in</a>
+        </div>
+    </div>
 </div>
