@@ -12,7 +12,6 @@ export const DB = {
                 return;
             }
             let DBOpenReq = indexedDB.open(username ? `userDB_${username}` : 'PlannerDb', version);
-            console.log('OPEN DB', DBOpenReq);
             if (version) {
                 resolve(DBOpenReq);
                 return;
@@ -30,11 +29,9 @@ export const DB = {
         let objectsStore = null;
         let db = null;
         try {
-            console.log('username', username);
             let DBOpenReq = await DB.open(username, 1);
         if (DBOpenReq) {
             DBOpenReq.onerror = (event) => {
-                console.log(event);
                 console.error(`Error opening database ${username ? ('for user ' + username) : 'PlannerDb'}: `, event.target.error);
             }
 

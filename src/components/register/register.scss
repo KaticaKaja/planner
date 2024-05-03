@@ -2,6 +2,7 @@ $primary:rgb(139, 211, 140);
 $secondary: rgb(240, 236, 236);
 
 #register {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;

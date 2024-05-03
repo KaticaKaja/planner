@@ -68,7 +68,7 @@ async function onLogin(ev) {
 
     if (user) {
         localStorage.setItem('isLoggedIn', 'true');
-        state.login.user = null;
+        state.home.user = user.username;
         navigate('/');
         DB.init(user.username);
 
