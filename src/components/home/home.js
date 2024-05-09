@@ -15,6 +15,7 @@ function showAuthOrNoAuth() {
         if (localStorage.getItem('user')) document.getElementById('user').innerText = localStorage.getItem('user').charAt(0).toUpperCase() + localStorage.getItem('user').slice(1);
         document.getElementById('logout').addEventListener('click', logout);
     } else {
+        console.log('UDJE LI GA ODJE!?!?!?!?');
         document.getElementById('auth').classList.remove('show');
         document.getElementById('auth').classList.add('noshow');
         document.getElementById('noauth').classList.remove('noshow');

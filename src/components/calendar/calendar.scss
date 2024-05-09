@@ -1,0 +1,239 @@
+#calendar {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: fit-content;
+    min-height: 70vh;
+    max-width: 60vw;
+    max-height: 70vh;
+
+    .main {
+        flex-grow: 1;
+        display: flex;
+        overflow: hidden;
+
+        .left {
+            flex-grow: 1;
+            display: flex;
+            padding: 0 3%;
+
+            .calendar {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                grid-template-rows: auto auto 1fr auto; /* Rows for month, weekdays, days, and goto-today */
+                gap: 10px;
+
+                .month {
+                    grid-column: 1 / span 7;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0% 0% 2%;
+
+                    .prev .next {
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: rgba(105, 160, 150, 0.9);
+                            font-size: 20px;
+                        }
+                    }
+                }
+
+                .weekdays {
+                    grid-column: 1 / span 7;
+                    display: grid;
+                    grid-template-columns: repeat(7, 1fr);
+                    text-align: center;
+                }
+
+                .days {
+                    grid-column: 1 / span 7;
+                    display: grid;
+                    grid-template-columns: repeat(7, 1fr);
+
+                    .day {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+
+                        &.active::before {
+                            content: '';
+                            position: absolute;
+                            bottom: 16%;
+                            left: 16%;
+                            width: 70%;
+                            height: 100%;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+                        }
+
+                        &:hover {
+                            background-color: rgba(105, 160, 150, 0.9);
+                        }
+                    }
+                }
+
+                .goto-today {
+
+                    .goto {
+                        display: flex;
+                        margin-bottom: 10px;
+
+                        .date-input {
+                            min-width: 200px;
+                            margin-right: 10px;
+                        }
+
+                        .goto-btn {
+                            min-width: 50px;
+                        }
+                    }
+
+                    .today-btn {
+                        min-width: 50px;
+                        min-height: 37px;
+                    }
+                }
+            }
+        }
+
+        .right {
+            display: flex;
+            flex-direction: column;
+            min-width: 35%;
+            min-height: 35%;
+            position: relative;
+
+            .today-date {
+                display: flex;
+                justify-content: space-evenly;
+                margin-bottom: 2%;
+            }
+
+            .events {
+                flex-grow: 1;
+                padding: 3%;
+                display: flex;
+                flex-direction: column;
+                overflow: scroll;
+
+                .no-event {
+                    margin: auto;
+                }
+            }
+
+            .add-event-wrapper {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+                max-height: 0;
+                width: 0;
+                overflow: hidden;
+                border-radius: 0px 20px 0 20px;
+                background-color: rgb(111,154,138);
+                transform: translateY(-50%);
+                transition: all 0.5s ease;
+                z-index: 2;
+
+                .add-event-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .close {
+                        cursor: pointer;
+                    }
+                }
+
+                .add-event-footer {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 3%;
+
+                    button {
+                        padding: 3%;
+                        border: 1px solid white;
+                        border-radius: 10px;
+                        background-color: transparent;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .add-event-wrapper.active {
+                max-height: 300px;
+                bottom: calc(0% - 80px);
+                right: 25px;
+                width: 80%;
+                padding: 5%;
+                border: 1px solid white;
+            }
+
+            .add-event {
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 1rem;
+                color: white;
+                border: 2px solid white;
+                opacity: 0.5;
+                border-radius: 50%;
+                background-color: transparent;
+                cursor: pointer;
+                align-self: flex-end;
+            }
+            .add-event:hover {
+                opacity: 1;
+                background-color: rgb(111,154,138);
+            }
+        }
+    }
+
+    button {
+        padding: 1%;
+        border: 1px solid white;
+        border-radius: 10px;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    a {
+        text-decoration: none;
+        border: 1px solid white;
+        padding: 10px;
+        border-radius: 10px;
+        display: block;
+        width: fit-content;
+        margin: 1% auto 0;
+        font-size: 18px;
+    }
+
+    input {
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid rgb(240, 236, 236);
+        outline: 0;
+        font-size: 16px;
+        color: rgb(240, 236, 236);
+        padding: 7px 0;
+        background: transparent!important;
+        transition: border-color 0.4s;
+
+        &::placeholder {
+            color: white;
+            opacity: 0.3;
+        }
+    }
+
+    @media screen and (max-width: 920px) {
+        /* Styles for screens smaller than 768px */
+
+        .main {
+            flex-direction: column;
+
+            .add-event-wrapper.active {
+                bottom: calc(0% - 50px);
+            }
+        }
+    }
+}
