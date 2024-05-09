@@ -120,6 +120,22 @@ export const DB = {
             }
         });
     },
+    delete: (table, key, username = undefined) => {
+        return new Promise(async (resolve, reject) => {
+            let tx = await makeTX(username, table, 'readwrite');
+            //if there is a necessity for a specific action on complete, move tx.oncompletete here
+            let store = tx.objectStore(table);
+            let request = store.delete(key);
+
+            request.onsuccess = (ev) => {
+                resolve(ev);
+            };
+
+            request.onerror = (err) => {
+                reject('There was an error while deleting data from ' + table + ' table.');
+            }
+        });
+    },
     getAll: (table, query = undefined, username = undefined) => {
         return new Promise(async (resolve, reject) => {
             let tx = await makeTX(username, table, 'readonly');
@@ -142,7 +158,7 @@ async function makeTX(username, storeName, mode) {
         if (!db) return;
         let tx = db.transaction(storeName, mode);
         tx.oncomplete = (ev) => {
-            console.info('Transaction complete: ', ev);
+            // console.info('Transaction complete: ', ev);
             tx.db.close();
         };
         tx.onerror = (err) => {

@@ -71,6 +71,11 @@
                         &:hover {
                             background-color: rgba(105, 160, 150, 0.9);
                         }
+
+                        &.event {
+                            color:  #96c93d;
+                            font-weight: 700;
+                        }
                     }
                 }
 
@@ -120,6 +125,28 @@
 
                 .no-event {
                     margin: auto;
+                }
+
+                .event {
+                    margin: 10px 0px;
+                    .title {
+                        display: flex;
+                        align-items: center;
+
+                        i {
+                            margin-right: 15px;
+                            font-size: 0.7rem;
+                        }
+
+                        .delete-event-btn {
+                            margin-left: auto;
+                            cursor: pointer;
+                        }
+                    }
+                    .event-time {
+                        font-size: 0.9rem;
+                        text-align: center;
+                    }
                 }
             }
 
@@ -223,6 +250,16 @@
             color: white;
             opacity: 0.3;
         }
+    }
+
+    input[type=time]::-webkit-datetime-edit-minute-field, ::-webkit-datetime-edit-hour-field {
+        background-color: transparent;
+    }
+    input[type=time]::-webkit-datetime-edit-minute-field:focus, ::-webkit-datetime-edit-hour-field:focus {
+        color: rgb(69 97 86);
+    }
+    input[type=time]::-webkit-calendar-picker-indicator {
+        filter: brightness(0) saturate(100%) invert(33%) sepia(9%) saturate(1160%) hue-rotate(105deg) brightness(97%) contrast(85%);
     }
 
     @media screen and (max-width: 920px) {
