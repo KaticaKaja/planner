@@ -6,6 +6,7 @@
     min-height: 70vh;
     max-width: 60vw;
     max-height: 70vh;
+    position: relative;
 
     .main {
         flex-grow: 1;
@@ -15,12 +16,13 @@
         .left {
             flex-grow: 1;
             display: flex;
-            padding: 0 3%;
+            flex-direction: column;
 
             .calendar {
+                flex-grow: 1;
                 display: grid;
-                grid-template-columns: repeat(7, 1fr);
-                grid-template-rows: auto auto 1fr auto; /* Rows for month, weekdays, days, and goto-today */
+                grid-template-columns: repeat(7, auto);
+                grid-template-rows: auto auto 1fr; /* Rows for month, weekdays, days */
                 gap: 10px;
 
                 .month {
@@ -29,13 +31,16 @@
                     justify-content: space-between;
                     align-items: center;
                     padding: 0% 0% 2%;
+                    height: fit-content;
 
-                    .prev .next {
+                    .prev, .next {
                         cursor: pointer;
+                        font-size: 1.2rem;
+                        padding: 3px;
 
                         &:hover {
-                            background-color: rgba(105, 160, 150, 0.9);
-                            font-size: 20px;
+                            background-color: rgb(105, 160, 150);
+                            border-radius: 25%;
                         }
                     }
                 }
@@ -43,62 +48,78 @@
                 .weekdays {
                     grid-column: 1 / span 7;
                     display: grid;
-                    grid-template-columns: repeat(7, 1fr);
+                    grid-template-columns: repeat(7, auto);
                     text-align: center;
+                    height: fit-content;
                 }
 
                 .days {
                     grid-column: 1 / span 7;
                     display: grid;
-                    grid-template-columns: repeat(7, 1fr);
+                    grid-template-columns: repeat(7, auto);
 
                     .day {
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         position: relative;
+                        min-height: 70px;
+                        min-width: 70px;
+                        max-height: 70px;
+                        max-width: 70px;
 
                         &.active::before {
                             content: '';
                             position: absolute;
-                            bottom: 16%;
-                            left: 16%;
-                            width: 70%;
-                            height: 100%;
-                            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+                            width: 60%;
+                            height: 60%;
+                            border-radius: 50%;
+                            z-index: -1;
+                            background-color: rgb(149, 218, 205);//rgba(87, 131, 123, 0.9);
                         }
 
                         &:hover {
                             background-color: rgba(105, 160, 150, 0.9);
+                            border-radius: 25%;
                         }
 
                         &.event {
-                            color:  #96c93d;
+                            color:  #b5e06b;
                             font-weight: 700;
+                        }
+                        &.today::after {
+                            content: '';
+                            position: absolute;
+                            border: 1px solid white;
+                            border-radius: 50%;
+                            width: 60%;
+                            height: 60%;
                         }
                     }
                 }
+            }
 
-                .goto-today {
+            .goto-today {
+                display: flex;
+                align-items: center;
 
-                    .goto {
-                        display: flex;
-                        margin-bottom: 10px;
+                .goto {
+                    display: flex;
 
-                        .date-input {
-                            min-width: 200px;
-                            margin-right: 10px;
-                        }
-
-                        .goto-btn {
-                            min-width: 50px;
-                        }
+                    .date-input {
+                        min-width: 200px;
+                        margin-right: 10px;
                     }
 
-                    .today-btn {
+                    .goto-btn {
                         min-width: 50px;
-                        min-height: 37px;
                     }
+                }
+
+                .today-btn {
+                    margin-left: 10px;
+                    min-width: 50px;
+                    min-height: 37px;
                 }
             }
         }
@@ -225,14 +246,14 @@
     }
 
     a {
+        position: absolute;
+        top: -30px;
+        left: -110px;
         text-decoration: none;
-        border: 1px solid white;
+        font-size: 2rem;
+        background-color: rgba(95, 160, 150, 0.8);
+        border-radius: 50%;
         padding: 10px;
-        border-radius: 10px;
-        display: block;
-        width: fit-content;
-        margin: 1% auto 0;
-        font-size: 18px;
     }
 
     input {
