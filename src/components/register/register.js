@@ -124,7 +124,6 @@ async function onRegister(ev) {
     delete state.register.user;
     delete user.failed;
     DB.add('users', user).then((ev) => {
-        console.log('Add user event:', ev.target.result);
         Toastify({
             text: "You are successfully registered!",
             duration: 3000,
