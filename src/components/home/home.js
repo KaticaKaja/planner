@@ -7,6 +7,8 @@ export default function load() {
     showAuthOrNoAuth();
 }
 
+let first = true;
+
 function showAuthOrNoAuth() {
     if (localStorage.getItem('isLoggedIn') === 'true') {
         document.getElementById('auth').classList.remove('noshow');
@@ -15,7 +17,7 @@ function showAuthOrNoAuth() {
         document.getElementById('noauth').classList.add('noshow');
         if (localStorage.getItem('user')) document.getElementById('user').innerText = localStorage.getItem('user').charAt(0).toUpperCase() + localStorage.getItem('user').slice(1);
         document.getElementById('logout').addEventListener('click', logout);
-        upcomingEventToastify();
+        if (first) upcomingEventToastify();
     } else {
         document.getElementById('auth').classList.remove('show');
         document.getElementById('auth').classList.add('noshow');
@@ -25,6 +27,7 @@ function showAuthOrNoAuth() {
 }
 
 async function upcomingEventToastify() {
+    first = false;
     const events = await DB.getAll('events', undefined, localStorage.getItem('user'));
     const today = new Date();
     const month = today.getMonth() + 1;
@@ -37,7 +40,7 @@ async function upcomingEventToastify() {
                 if (event.time.split('-')[0].split(':')[0] > hour) {
                     Toastify({
                         text: "You have an upcoming event today!" + '\n"' + event.title + '" is due today at ' + event.time.split('-')[0],
-                        duration: 5000,
+                        duration: 4000,
                         close: true,
                         gravity: "top", // `top` or `bottom`
                         position: "center", // `left`, `center` or `right`
