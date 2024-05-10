@@ -1,6 +1,6 @@
 import './calendar.scss';
 import { DB, uid } from '../../core/db.js';
-import Toastify from 'toastify-js'
+import Toastify from 'toastify-js';
 
 export default async function load() {
 
@@ -323,6 +323,21 @@ export default async function load() {
         if (eventTitle === '' || eventTimeFrom === '' || eventTimeTo === '') {
             Toastify({
                 text: "Please fill all the fields.",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                }
+            }).showToast();
+            return;
+        }
+
+        if (eventTimeTo.split(':')[0].charAt(0) === '0') {
+            Toastify({
+                text: "Time to is valid until 23:59",
                 duration: 3000,
                 close: true,
                 gravity: "top", // `top` or `bottom`
