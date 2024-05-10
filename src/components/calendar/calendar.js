@@ -1,5 +1,6 @@
 import './calendar.scss';
 import { DB, uid } from '../../core/db.js';
+import Toastify from 'toastify-js'
 
 export default async function load() {
 
@@ -197,7 +198,17 @@ export default async function load() {
                 return;
             }
         }
-        alert('Invalid Date');
+        Toastify({
+            text: "Invalid date.",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+            }
+        }).showToast();
     }
 
     //function to add active on day
@@ -310,7 +321,33 @@ export default async function load() {
         const eventTimeFrom = addEventFrom.value;
         const eventTimeTo = addEventTo.value;
         if (eventTitle === '' || eventTimeFrom === '' || eventTimeTo === '') {
-            alert('Please fill all the fields');
+            Toastify({
+                text: "Please fill all the fields.",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                }
+            }).showToast();
+            return;
+        }
+
+        if (eventTimeFrom.split(':')[0] > eventTimeTo.split(':')[0] ||
+            (eventTimeFrom.split(':')[0] === eventTimeTo.split(':')[0] && eventTimeFrom.split(':')[1] >= eventTimeTo.split(':')[1])) {
+            Toastify({
+                text: "Time from should be before time to",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                }
+            }).showToast();
             return;
         }
 
@@ -328,7 +365,17 @@ export default async function load() {
             }
         });
         if (eventExist) {
-            alert('Event already added');
+            Toastify({
+                text: "Event already added.",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                }
+            }).showToast();
             return;
         }
         const newEvent = {
