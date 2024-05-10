@@ -267,14 +267,16 @@ export default async function load() {
                 year === event.year
             ) {
                 events += `<div class='event'>
-                                <div class='title'>
-                                    <i class='fas fa-circle'></i>
-                                    <h4 class='event-title'>${event.title}</h4>
-                                    <i data-id="${event.id}" data-day="${event.day}" class='delete-event-btn fas fa-trash-can'></i>
+                                <div class='ev_content'>
+                                    <div class='title'>
+                                        <i class='fas fa-circle'></i>
+                                        <h4 class='event-title'>${event.title}</h4>
+                                    </div>
+                                    <div class='event-time'>
+                                        <span class='event-time'>${event.time}</span>
+                                    </div>
                                 </div>
-                                <div class='event-time'>
-                                <span class='event-time'>${event.time}</span>
-                                </div>
+                                <i data-id="${event.id}" data-day="${event.day}" class='delete-event-btn fas fa-trash-can'></i>
                             </div>`;
             }
         });
@@ -361,7 +363,7 @@ export default async function load() {
         addEventTo.value = '';
         updateEvents(activeDay, Number(eventDate.dataset.month) + 1 || month + 1);
         //select active day and add event class if not added
-        const activeDayEl = document.querySelector('.day.active');
+        const activeDayEl = document.querySelector('.day.active') || document.querySelector('.today');
         if (!activeDayEl.classList.contains('event')) {
             activeDayEl.classList.add('event');
         }

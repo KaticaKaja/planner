@@ -2,11 +2,9 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    min-width: fit-content;
-    min-height: 70vh;
-    max-width: 60vw;
-    max-height: 70vh;
     position: relative;
+    min-height: 60vh;
+    max-height: 60vh;
 
     .main {
         flex-grow: 1;
@@ -20,17 +18,14 @@
 
             .calendar {
                 flex-grow: 1;
-                display: grid;
-                grid-template-columns: repeat(7, auto);
-                grid-template-rows: auto auto 1fr; /* Rows for month, weekdays, days */
-                gap: 10px;
 
+                display: flex;
+                flex-direction: column;
                 .month {
-                    grid-column: 1 / span 7;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 0% 0% 2%;
+                    padding-bottom: 10px;
                     height: fit-content;
 
                     .prev, .next {
@@ -46,27 +41,28 @@
                 }
 
                 .weekdays {
-                    grid-column: 1 / span 7;
                     display: grid;
-                    grid-template-columns: repeat(7, auto);
-                    text-align: center;
-                    height: fit-content;
+                    grid-template-columns: repeat(7, 1fr);
+                    div {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
                 }
 
                 .days {
                     grid-column: 1 / span 7;
                     display: grid;
-                    grid-template-columns: repeat(7, auto);
+                    grid-template-columns: repeat(7, 1fr);
+                    padding-bottom: 10px;
+                    flex-grow: 1;
 
                     .day {
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         position: relative;
-                        min-height: 70px;
-                        min-width: 70px;
-                        max-height: 70px;
-                        max-width: 70px;
+                        // aspect-ratio: 1/1;
 
                         &.active::before {
                             content: '';
@@ -75,7 +71,7 @@
                             height: 60%;
                             border-radius: 50%;
                             z-index: -1;
-                            background-color: rgb(149, 218, 205);//rgba(87, 131, 123, 0.9);
+                            background-color: rgb(149, 218, 205);
                         }
 
                         &:hover {
@@ -127,19 +123,27 @@
         .right {
             display: flex;
             flex-direction: column;
-            min-width: 35%;
-            min-height: 35%;
+            min-width: 30%;
+            max-width: min-content;
             position: relative;
 
             .today-date {
                 display: flex;
-                justify-content: space-evenly;
-                margin-bottom: 2%;
+                align-self: center;
+
+                .event-day {
+                    margin-right: 5px;
+
+                    &::after {
+                        content: ',';
+                    }
+                }
             }
 
             .events {
                 flex-grow: 1;
-                padding: 3%;
+                margin: 15px 0px 15px 15px;
+                padding-right: 15px;
                 display: flex;
                 flex-direction: column;
                 overflow: scroll;
@@ -149,24 +153,29 @@
                 }
 
                 .event {
+                    display: flex;
+                    align-items: baseline;
                     margin: 10px 0px;
-                    .title {
-                        display: flex;
-                        align-items: center;
+                    .ev_content {
+                        .title {
+                            display: flex;
+                            align-items: baseline;
+                            padding-right: 10px;
 
-                        i {
-                            margin-right: 15px;
-                            font-size: 0.7rem;
+                            i {
+                                margin-right: 15px;
+                                font-size: 0.7rem;
+                            }
                         }
-
-                        .delete-event-btn {
-                            margin-left: auto;
-                            cursor: pointer;
+                        .event-time {
+                            font-size: 0.9rem;
+                            margin: 5px 10px 0px;
+                            width: 100%;
                         }
                     }
-                    .event-time {
-                        font-size: 0.9rem;
-                        text-align: center;
+                    .delete-event-btn {
+                        cursor: pointer;
+                        margin-left: auto;
                     }
                 }
             }
@@ -197,10 +206,10 @@
                 .add-event-footer {
                     display: flex;
                     justify-content: center;
-                    margin-top: 3%;
+                    margin-top: 10px;
 
                     button {
-                        padding: 3%;
+                        padding: 10px;
                         border: 1px solid white;
                         border-radius: 10px;
                         background-color: transparent;
@@ -238,7 +247,6 @@
     }
 
     button {
-        padding: 1%;
         border: 1px solid white;
         border-radius: 10px;
         background-color: transparent;
@@ -248,7 +256,7 @@
     a {
         position: absolute;
         top: -30px;
-        left: -110px;
+        left: -100px;
         text-decoration: none;
         font-size: 2rem;
         background-color: rgba(95, 160, 150, 0.8);
@@ -283,11 +291,52 @@
         filter: brightness(0) saturate(100%) invert(33%) sepia(9%) saturate(1160%) hue-rotate(105deg) brightness(97%) contrast(85%);
     }
 
-    @media screen and (max-width: 920px) {
-        /* Styles for screens smaller than 768px */
-
+    @media screen and (max-width: 1110px) {
         .main {
             flex-direction: column;
+
+            .left {
+                overflow: hidden;
+
+                .goto-today {
+                    margin-top: 10px;
+                }
+
+                .calendar {
+                    overflow: hidden;
+
+                    .days {
+                        overflow: scroll;
+
+                        .day {
+                            aspect-ratio: auto;
+                        }
+                    }
+                }
+            }
+
+            .right {
+                margin: 20px 0 0 0;
+                min-height: 40%;
+                max-height: 40%;
+                min-width: 100%;
+
+                .events {
+                    margin: 10px 0px;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+
+                    .event {
+                        width: 90%;
+                    }
+
+                    .no-event {
+                        grid-column: span 2;
+                    }
+                }
+
+
+            }
 
             .add-event-wrapper.active {
                 bottom: calc(0% - 50px);
