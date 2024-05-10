@@ -46,7 +46,7 @@ export default async function load() {
     initCalendar();
 
     //function to add days in days with class day and prev-date next-date on previous month and next month days and active on today
-    function initCalendar() {
+    function initCalendar(clickedDate = undefined) {
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
         const prevLastDay = new Date(year, month, 0);
@@ -54,19 +54,37 @@ export default async function load() {
         const lastDate = lastDay.getDate();
         const day = firstDay.getDay();
         const nextDays = 7 - lastDay.getDay() - 1;
+        let prevMonth = month;
+        let nextMonth = month + 2;
 
         date.innerHTML = months[month] + ' ' + year;
 
         let days = '';
 
         for (let x = day; x > 0; x--) {
-            days += `<div class='day prev-date'>${prevDays - x + 1}</div>`;
+            prevMonth = month;
+            let event = false;
+            let skip = false;
+            eventsArr.forEach((eventObj) => {
+                if (
+                    eventObj.day === (prevDays - x + 1) &&
+                    eventObj.month === prevMonth &&
+                    eventObj.year === year
+                ) {
+                    event = true;
+                    if (event) {
+                        days += `<div data-month='${prevMonth}' class='day event prev-date'>${prevDays - x + 1}</div>`;
+                        skip = true;
+                    }
+                }
+            });
+            if (skip) continue;
+            days += `<div data-month='${prevMonth}' class='day prev-date'>${prevDays - x + 1}</div>`;
         }
 
         for (let i = 1; i <= lastDate; i++) {
             //check if event is present on that day
             let event = false;
-            getEvents();
             eventsArr.forEach((eventObj) => {
                 if (
                     eventObj.day === i &&
@@ -81,13 +99,13 @@ export default async function load() {
                 year === new Date().getFullYear() &&
                 month === new Date().getMonth()
             ) {
-                activeDay = i;
-                getActiveDay(i);
-                updateEvents(i);
+                activeDay = clickedDate || i;
+                getActiveDay(clickedDate || i);
+                updateEvents(clickedDate || i);
                 if (event) {
-                    days += `<div class='day today active event'>${i}</div>`;
+                    days += `<div class='day today event'>${i}</div>`;
                 } else {
-                    days += `<div class='day today active'>${i}</div>`;
+                    days += `<div class='day today'>${i}</div>`;
                 }
             } else {
                 if (event) {
@@ -99,47 +117,96 @@ export default async function load() {
         }
 
         for (let j = 1; j <= nextDays; j++) {
-            days += `<div class='day next-date'>${j}</div>`;
+            let event = false;
+            let skip = false;
+            eventsArr.forEach((eventObj) => {
+                if (
+                    eventObj.day === j &&
+                    eventObj.month === nextMonth &&
+                    eventObj.year === year
+                ) {
+                    event = true;
+                    if (event) {
+                        days += `<div data-month='${nextMonth}' class='day event next-date'>${j}</div>`;
+                        skip = true;
+                    }
+                }
+            });
+            if (skip) continue;
+            days += `<div data-month='${nextMonth}' class='day next-date'>${j}</div>`;
         }
         daysContainer.innerHTML = days;
         addListener();
     }
 
     //function to add month and year on prev and next button
-    function prevMonth() {
+    function prevMonth(clickedDate = undefined) {
+        if (typeof clickedDate !== 'string') clickedDate = undefined;
         month--;
         if (month < 0) {
             month = 11;
             year--;
         }
-        initCalendar();
+        initCalendar(clickedDate);
     }
 
-    function nextMonth() {
+    function nextMonth(clickedDate = undefined) {
+        if (typeof clickedDate !== 'string') clickedDate = undefined;
         month++;
         if (month > 11) {
             month = 0;
             year++;
         }
-        initCalendar();
+        initCalendar(clickedDate);
     }
 
     prev.addEventListener('click', prevMonth);
     next.addEventListener('click', nextMonth);
     todayBtn.addEventListener('click', () => {
+        dateInput.value = '';
         today = new Date();
+        activeDay = today.getDate();
         month = today.getMonth();
         year = today.getFullYear();
         initCalendar();
     });
+    dateInput.addEventListener('input', (e) => {
+        dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
+        if (dateInput.value.length === 2) {
+          dateInput.value += '/';
+        }
+        if (dateInput.value.length > 7) {
+          dateInput.value = dateInput.value.slice(0, 7);
+        }
+        if (e.inputType === 'deleteContentBackward') {
+          if (dateInput.value.length === 3) {
+            dateInput.value = dateInput.value.slice(0, 2);
+          }
+        }
+      });
+
+    gotoBtn.addEventListener('click', gotoDate);
+
+    function gotoDate() {
+        const dateArr = dateInput.value.split('/');
+        if (dateArr.length === 2) {
+            if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
+                month = dateArr[0] - 1;
+                year = dateArr[1];
+                initCalendar();
+                return;
+            }
+        }
+        alert('Invalid Date');
+    }
 
     //function to add active on day
     function addListener() {
         const days = document.querySelectorAll('.day');
         days.forEach((day) => {
             day.addEventListener('click', (e) => {
-                getActiveDay(e.target.innerHTML);
-                updateEvents(Number(e.target.innerHTML));
+                getActiveDay(e.target.innerHTML, Number(e.target.dataset.month) || undefined);
+                updateEvents(Number(e.target.innerHTML), Number(e.target.dataset.month) || undefined);
                 activeDay = Number(e.target.innerHTML);
                 //remove active
                 days.forEach((day) => {
@@ -147,7 +214,7 @@ export default async function load() {
                 });
                 //if clicked prev-date or next-date switch to that month
                 if (e.target.classList.contains('prev-date')) {
-                    prevMonth();
+                    prevMonth(e.target.innerHTML);
                     //add active to clicked day afte month is change
                     setTimeout(() => {
                         //add active where no prev-date or next-date
@@ -162,8 +229,7 @@ export default async function load() {
                         });
                     }, 100);
                 } else if (e.target.classList.contains('next-date')) {
-                    nextMonth();
-                    //add active to clicked day afte month is changed
+                    nextMonth(e.target.innerHTML);
                     setTimeout(() => {
                         const days = document.querySelectorAll('.day');
                         days.forEach((day) => {
@@ -182,36 +248,22 @@ export default async function load() {
         });
     }
 
-    gotoBtn.addEventListener('click', gotoDate);
-
-    function gotoDate() {
-        const dateArr = dateInput.value.split('/');
-        if (dateArr.length === 2) {
-            if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
-                month = dateArr[0] - 1;
-                year = dateArr[1];
-                initCalendar();
-                return;
-            }
-        }
-        alert('Invalid Date');
-    }
-
     //function get active day day name and date and update eventday eventdate
-    function getActiveDay(date) {
-        const day = new Date(year, month, date);
+    function getActiveDay(date, m = undefined) {
+        const day = new Date(year, m | month, date);
         const dayName = day.toString().split(' ')[0];
         eventDay.innerHTML = dayName;
-        eventDate.innerHTML = date + ' ' + months[month] + ' ' + year;
+        eventDate.dataset.month = Number(m);
+        eventDate.innerHTML = date + ' ' + months[Number(m) - 1 || month] + ' ' + year;
     }
 
     //function update events when a day is active
-    function updateEvents(date) {
+    function updateEvents(date, m = undefined) {
         let events = '';
         eventsArr.forEach((event) => {
             if (
                 Number(date) === event.day &&
-                month + 1 === event.month &&
+                (!m && (month + 1 === event.month) || m === event.month) &&
                 year === event.year
             ) {
                 events += `<div class='event'>
@@ -287,7 +339,7 @@ export default async function load() {
         eventsArr.push({
             id: id,
             day: activeDay,
-            month: month + 1,
+            month: Number(eventDate.dataset.month) || month + 1,
             year: year,
             title: newEvent.title,
             time: newEvent.time
@@ -295,7 +347,7 @@ export default async function load() {
         DB.add('events', {
             id: id,
             day: activeDay,
-            month: month + 1,
+            month: Number(eventDate.dataset.month) || month + 1,
             year: year,
             title: newEvent.title,
             time: newEvent.time
@@ -307,7 +359,7 @@ export default async function load() {
         addEventTitle.value = '';
         addEventFrom.value = '';
         addEventTo.value = '';
-        updateEvents(activeDay);
+        updateEvents(activeDay, Number(eventDate.dataset.month) + 1 || month + 1);
         //select active day and add event class if not added
         const activeDayEl = document.querySelector('.day.active');
         if (!activeDayEl.classList.contains('event')) {
