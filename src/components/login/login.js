@@ -18,8 +18,9 @@ export default function load() {
             background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
+        return;
     }
-    loadState();
+        loadState();
         document.login.addEventListener('change', getValue);
         document.login.addEventListener('submit', onLogin);
 }

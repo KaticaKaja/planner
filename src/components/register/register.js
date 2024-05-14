@@ -5,6 +5,21 @@ import Toastify from 'toastify-js'
 import { navigate } from '../../core/router.js';
 
 export default function load() {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        navigate('/');
+        Toastify({
+            text: "You are already logged in!",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+        return;
+    }
     loadState();
     document.register.addEventListener('submit', onRegister);
     document.register.addEventListener('change', validatedUser);

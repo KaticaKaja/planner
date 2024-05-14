@@ -1,8 +1,25 @@
 import './calendar.scss';
 import { DB, uid } from '../../core/db.js';
+import { navigate } from '../../core/router';
 import Toastify from 'toastify-js';
 
 export default async function load() {
+
+    if (localStorage.getItem('isLoggedIn') === null) {
+        navigate('/login');
+        Toastify({
+            text: "You need to sign in first!",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+        return;
+    }
 
     const calendar = document.querySelector('.calendar'),
         date = document.querySelector('.date'),
