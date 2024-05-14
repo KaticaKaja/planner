@@ -50,7 +50,7 @@ async function validatedUser(ev) {
                 duration: 3000,
                 close: true,
                 gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
+                position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
                   background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
@@ -67,7 +67,7 @@ async function validatedUser(ev) {
                 newWindow: false,
                 close: true,
                 gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
+                position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
                   background: "linear-gradient(to right, #00b09b, #96c93d)",
@@ -129,7 +129,7 @@ async function onRegister(ev) {
             duration: 3000,
             close: true,
             gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
+            position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
               background: "linear-gradient(to right, #00b09b, #96c93d)",
@@ -142,7 +142,7 @@ async function onRegister(ev) {
             duration: 3000,
             close: true,
             gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
+            position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
               background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",

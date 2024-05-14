@@ -5,9 +5,23 @@ import { DB } from '../../core/db.js';
 import Toastify from 'toastify-js'
 
 export default function load() {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        navigate('/');
+        Toastify({
+            text: "You are already logged in!",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+    }
     loadState();
-    document.login.addEventListener('change', getValue);
-    document.login.addEventListener('submit', onLogin);
+        document.login.addEventListener('change', getValue);
+        document.login.addEventListener('submit', onLogin);
 }
 
 function loadState() {
@@ -79,7 +93,7 @@ async function onLogin(ev) {
             // newWindow: true,
             close: true,
             gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
+            position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
             background: "linear-gradient(to right, #00b09b, #96c93d)",

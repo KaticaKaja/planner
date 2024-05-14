@@ -4,7 +4,10 @@
     flex-direction: column;
     position: relative;
     min-height: 60vh;
-    max-height: 60vh;
+    background-color: rgba(95, 160, 150, 0.8);
+    border-radius: 25px;
+    padding: 30px;
+    margin: 0 auto;
 
     .main {
         flex-grow: 1;
@@ -62,7 +65,6 @@
                         justify-content: center;
                         align-items: center;
                         position: relative;
-                        // aspect-ratio: 1/1;
 
                         &.active::before {
                             content: '';

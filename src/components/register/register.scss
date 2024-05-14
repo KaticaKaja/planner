@@ -2,11 +2,14 @@ $primary:rgb(139, 211, 140);
 $secondary: rgb(240, 236, 236);
 
 #register {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: rgba(95, 160, 150, 0.8);
+    border-radius: 25px;
+    padding: 30px;
+    margin: 0 auto;
 
     .form_title {
         text-align: center;
@@ -16,9 +19,8 @@ $secondary: rgb(240, 236, 236);
     .form_input_group {
         position: relative;
         padding: 15px 0 0;
-        width: 225px;
-        min-width: 225px;
-        max-width: 225px;
+        width: 80%;
+        max-width: 300px;
         input {
             width: 100%;
             border: none;
