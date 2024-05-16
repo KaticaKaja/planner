@@ -73,23 +73,23 @@ export const DB = {
                             keyPath: 'id',
                         });
                     }
-                    if (!db.objectStoreNames.contains('budget')) {
-                        objectsStore = db.createObjectStore('budget', {
+                    // if (!db.objectStoreNames.contains('budget')) {
+                    //     objectsStore = db.createObjectStore('budget', {
+                    //         keyPath: 'id',
+                    //     });
+                    // }
+                    // if (!db.objectStoreNames.contains('expense_categories')) {
+                    //     objectsStore = db.createObjectStore('expense_categories', {
+                    //         keyPath: 'id',
+                    //     });
+                    // }
+                    if (!db.objectStoreNames.contains('finance')) {
+                        objectsStore = db.createObjectStore('finance', {
                             keyPath: 'id',
                         });
                     }
-                    if (!db.objectStoreNames.contains('expense_categories')) {
-                        objectsStore = db.createObjectStore('expense_categories', {
-                            keyPath: 'id',
-                        });
-                    }
-                    if (!db.objectStoreNames.contains('income')) {
-                        objectsStore = db.createObjectStore('income', {
-                            keyPath: 'id',
-                        });
-                    }
-                    if (!db.objectStoreNames.contains('expenses')) {
-                        objectsStore = db.createObjectStore('expenses', {
+                    if (!db.objectStoreNames.contains('expense_income')) {
+                        objectsStore = db.createObjectStore('expense_income', {
                             keyPath: 'id',
                         });
                     }
@@ -110,6 +110,22 @@ export const DB = {
             //if there is a necessity for a specific action on complete, move tx.oncompletete here
             let store = tx.objectStore(table);
             let request = store.add(data);
+
+            request.onsuccess = (ev) => {
+                resolve(ev);
+            };
+
+            request.onerror = (err) => {
+                reject('There was an error while adding data to ' + table + ' table.');
+            }
+        });
+    },
+    update: (table, data, username = undefined) => {
+        return new Promise(async (resolve, reject) => {
+            let tx = await makeTX(username, table, 'readwrite');
+            //if there is a necessity for a specific action on complete, move tx.oncompletete here
+            let store = tx.objectStore(table);
+            let request = store.put(data);
 
             request.onsuccess = (ev) => {
                 resolve(ev);
