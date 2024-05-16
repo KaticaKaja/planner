@@ -434,8 +434,6 @@ export default async function load() {
             time: newEvent.time
         }, localStorage.getItem('user'));
 
-        // await getEvents();
-
         addEventWrapper.classList.remove('active');
         addEventTitle.value = '';
         addEventFrom.value = '';
@@ -453,7 +451,7 @@ export default async function load() {
         if (e.target.matches('.delete-event-btn')) {
             const day = Number(e.target.dataset.day);
             const id = e.target.dataset.id;
-            const activeDayEl = document.querySelector('.day.active');
+            const activeDayEl = document.querySelector('.day.active') || document.querySelector('.today');
             DB.delete('events', id, localStorage.getItem('user')).then(() => {
                 getEvents().then(() => {
                     updateEvents(day);
