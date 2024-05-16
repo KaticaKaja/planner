@@ -2,11 +2,12 @@ import './finance.scss';
 import { navigate } from '../../core/router';
 import { DB, uid } from '../../core/db.js';
 import Toastify from 'toastify-js';
+import Chart from 'chart.js/auto';
 
 export default function load() {
     const VALUTES = ['RSD', 'USD', 'EUR'];
     const EXPENSE_CATEGORIES = ['entertainment', 'household', 'food', 'apparel', 'gift', 'social life', 'health', 'transport', 'subscriptions', 'bank(credit, provisions...)', 'other'];
-    const INCOME_CATEGORIES = ['salary', 'side hustle', 'loan', 'other'];
+    const INCOME_CATEGORIES = ['salary', 'side hustle', 'other'];
     const MONTHS = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July',
                     'August', 'September', 'October', 'November', 'December'];
 
@@ -102,9 +103,12 @@ export default function load() {
         let expense_amount = 0;
         let income_amount = 0;
         const expenses_incomes = await DB.getAll('expense_income', undefined, localStorage.getItem('user'));
+        const expenses = expenses_incomes.filter((ei) => ei.type === 'expense');
         const balance_budget = financeAll.find((f) => f.month === MONTHS[today.getMonth()] && f.year === today.getFullYear());
         expenses_incomes.sort((a, b) => b.timestamp - a.timestamp);
         list.innerHTML = '';
+        if (expenses.length === 0) document.getElementById('toggle_history').style.display = 'none';
+        else  document.getElementById('toggle_history').style.display = 'block';
         if (expenses_incomes.length === 0) list.previousElementSibling.innerHTML = 'No History';
         else list.previousElementSibling.innerHTML = 'History';
         expenses_incomes.forEach((ei) => {
@@ -114,21 +118,19 @@ export default function load() {
                                         <button data-id=${ei.id} class="delete-btn">x</button>
                                     </li>`;
                 expense_amount += Number(ei.amount);
-                document.querySelector(`[data-id="${ei.id}"]`).addEventListener('click', (e) => {
-                    DB.delete('expense_income', e.target.dataset.id, localStorage.getItem('user'));
-                    updateHistory();
-                });
             }else {
                 list.innerHTML += `<li class="plus">
                                         <span>${ei.desc}</span><span>+$${ei.amount}</span>
                                         <button data-id=${ei.id} class="delete-btn">x</button>
                                     </li>`;
                 income_amount +=  Number(ei.amount);
-                document.querySelector(`[data-id="${ei.id}"]`).addEventListener('click', (e) => {
+            }
+            document.querySelectorAll('#list button').forEach((b) => {
+                b.addEventListener('click', (e) => {
                     DB.delete('expense_income', e.target.dataset.id, localStorage.getItem('user'));
                     updateHistory();
                 });
-            }
+            })
         });
         expense.innerHTML = '-$'+ expense_amount;
         budget.innerHTML = '$' + (balance_budget.budget - expense_amount);
@@ -139,7 +141,7 @@ export default function load() {
             setTimeout(() => {
                 Toastify({
                     text: 'You are over your monthly budget!',
-                    duration: 3000,
+                    duration: 2000,
                     close: true,
                     gravity: 'top', // `top` or `bottom`
                     position: 'center', // `left`, `center` or `right`
@@ -148,7 +150,7 @@ export default function load() {
                         background: 'linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))',
                     }
                 }).showToast();
-            }, 2000);
+            }, 1000);
         } else {
             budget.classList.remove('minus');
             budget.classList.add('plus');
@@ -212,4 +214,57 @@ export default function load() {
 
         updateHistory();
     }
+
+    document.getElementById('toggle_history').addEventListener('click', async (e) => {
+        let mychart = null;
+        const expenses_incomes = await DB.getAll('expense_income', undefined, localStorage.getItem('user'));
+        const expenses = expenses_incomes.filter((ei) => ei.type === 'expense');
+        if (!document.getElementById('graph').classList.contains('open')) {
+            document.getElementById('list').classList.add('close');
+            document.getElementById('graph').classList.add('open');
+            document.getElementById('toggle_history').className = 'fas fa-list';
+            mychart = new Chart(
+                document.querySelector('.graph'),
+                {
+                  type: 'pie',
+                  data: {
+                    labels: expenses.map(ei => ei.category),
+                    datasets: [
+                      {
+                        label: 'Expenses by category',
+                        data: expenses.map(ei => ei.amount),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                            'rgba(255, 159, 64, 0.8)',
+                            'rgba(60, 179, 113, 0.8)',
+                            'rgba(255, 69, 0, 0.8)',
+                            'rgba(255, 165, 0, 0.8)',
+                            'rgba(128, 0, 128, 0.8)',
+                            'rgba(0, 128, 0, 0.8)',
+                            'rgba(128, 128, 0, 0.8)',
+                            'rgba(255, 192, 203, 0.8)',
+                            'rgba(255, 0, 255, 0.8)'
+
+                          ],
+                          hoverOffset: 4
+                      }
+                    ]
+                  }
+                }
+            );
+            document.getElementById('income_expense').classList.add('close');
+            document.getElementById('graph').canvas = mychart.canvas;
+        } else {
+            document.getElementById('list').classList.remove('close');
+            document.getElementById('graph').classList.remove('open');
+            document.getElementById('income_expense').classList.remove('close');
+            document.querySelector('#graph').innerHTML = '<canvas class="graph"></canvas>';
+            mychart = null;
+            document.getElementById('toggle_history').className = 'fas fa-chart-pie';
+        }
+    });
 }

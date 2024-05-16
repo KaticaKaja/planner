@@ -23,16 +23,20 @@
             </div>
         </div>
 
-        <h3>History</h3>
-        <ul id="list" class="list">
-        </ul>
-
+        <div id="history">
+            <button class="fas fa-chart-pie" id="toggle_history"></button>
+            <h3>History</h3>
+            <ul id="list" class="list">
+            </ul>
+            <div id="graph">
+                <canvas class="graph"></canvas>
+            </div>
+        </div>
         <div id="income_expense">
             <div>
                 <h3>Add new income</h3>
                 <form id="form_income">
                     <div class="form_control">
-                        <!-- <label for="text">Text</label> -->
                         <input type="text" class="desc" maxlength="50" placeholder="Enter income description..." />
                     </div>
                     <div class="form_control">
