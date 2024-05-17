@@ -461,9 +461,8 @@ export default async function load() {
         }
     });
 
-    //function to get events from local storage
     async function getEvents() {
-        eventsArr = await DB.getAll('events', undefined, localStorage.getItem('user')).catch((err) => console.log('ERROR on getAll events'));
+        eventsArr = await DB.getAll('events', undefined, localStorage.getItem('user'));
     }
 
 }

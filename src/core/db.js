@@ -132,7 +132,7 @@ export const DB = {
             };
 
             request.onerror = (err) => {
-                reject('There was an error while adding data to ' + table + ' table.');
+                reject('There was an error while updating data to ' + table + ' table.');
             }
         });
     },
@@ -162,7 +162,21 @@ export const DB = {
                 resolve(ev.target.result);
             }
             request.onerror = (err) => {
-                reject('There was an error while adding data to ' + table + ' table.');
+                reject('There was an error while getting items from ' + table + ' table.');
+            }
+        });
+    },
+    get: (table, id, username = undefined) => {
+        return new Promise(async (resolve, reject) => {
+            let tx = await makeTX(username, table, 'readonly');
+            //if there is a necessity for a specific action on complete, move tx.oncompletete here
+            let store = tx.objectStore(table);
+            let request = store.get(id);
+            request.onsuccess = (ev) => {
+                resolve(ev.target.result);
+            }
+            request.onerror = (err) => {
+                reject('There was an error while getting item from ' + table + ' table.');
             }
         });
     }

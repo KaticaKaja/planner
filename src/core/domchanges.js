@@ -3,6 +3,7 @@ import loadHome from '../components/home/home';
 import loadLogin from '../components/login/login';
 import loadRegister from '../components/register/register';
 import loadFinance from '../components/finance/finance';
+import loadNotes from '../components/notes/notes';
 import { route } from './router';
 
 const targetNode = document.getElementById('content');
@@ -24,6 +25,9 @@ const callback = () => {
     }
     if (window.location.pathname === '/finance') {
         loadFinance();
+    }
+    if (window.location.pathname === '/notes') {
+        loadNotes();
     }
     if (window.location.pathname === '/') {
         loadHome();
