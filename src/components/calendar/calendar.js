@@ -326,7 +326,7 @@ export default async function load() {
         addEventWrapper.classList.remove('active');
     });
 
-    document.addEventListener('click', (e) => {
+    document.querySelector('#calendar').addEventListener('click', (e) => {
         if (e.target !== addEventBtn && !addEventWrapper.contains(e.target)) {
             addEventWrapper.classList.remove("active");
         }

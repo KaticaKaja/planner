@@ -23,7 +23,7 @@ export default function load() {
         wrapper_reset();
     });
 
-    document.addEventListener('click', (e) => {
+    document.querySelector('#notes').addEventListener('click', (e) => {
         if (e.target !== openAddNoteBtn && !addNoteWrapper.contains(e.target)) { //mozda treba dodati note da iskljuci iz price
             addNoteWrapper.classList.remove("active");
             wrapper_reset();
