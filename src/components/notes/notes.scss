@@ -45,11 +45,11 @@
             min-width: calc((60vw / 3) - 80px);
             max-height: calc(60vh / 2);
             max-width: calc(60vw / 3);
-            overflow-y: auto;
             padding: 5px 10px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
+            position: relative;
 
             &:hover {
                 background-color: rgba(250, 235, 215, 1);
@@ -67,7 +67,7 @@
                 .title {
                     color: rgb(111,154,138);
                     font-weight: 400;
-                    max-width: calc(100% / 3);
+                    max-width: 90%;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
@@ -90,7 +90,22 @@
 
             .note-body {
                 flex-grow: 1;
+                overflow-y: auto;
                 color: rgb(111,154,138);
+                margin-bottom: 20px;
+            }
+
+            .note-footer {
+                position: absolute;
+                border-radius: 20px;
+                padding: 0px 20px 5px 0px;
+                bottom: 0;
+                right: 0;
+
+                .timestamp {
+                    font-size: 0.8rem;
+                    color: rgb(111,154,138);
+                }
             }
 
         }

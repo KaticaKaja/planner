@@ -24,7 +24,7 @@ export default function load() {
     });
 
     document.querySelector('#notes').addEventListener('click', (e) => {
-        if (e.target !== openAddNoteBtn && !addNoteWrapper.contains(e.target)) { //mozda treba dodati note da iskljuci iz price
+        if (e.target !== openAddNoteBtn && !addNoteWrapper.contains(e.target)) {
             addNoteWrapper.classList.remove("active");
             wrapper_reset();
         }
@@ -94,10 +94,10 @@ export default function load() {
             <div class="note" data-id="${n.id}">
                 <div class="note-header">
                     <span class="title">${n.title}</span>
-                    <span class="timestamp">(${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}.)</span>
                     <i data-id="${n.id}" class="fas fa-trash delete"></i>
                 </div>
                 <div class="note-body">${n.text}</div>
+                <div class="note-footer"><span class="timestamp">${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}.</span></div>
             </div>`;
         });
         const notes_el = document.querySelectorAll('.note');
