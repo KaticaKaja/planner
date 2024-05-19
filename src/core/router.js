@@ -1,4 +1,5 @@
 const ROUTES = {
+    'notfound': '/src/components/notfound/notfound',
     '/': '/src/components/home/home',
     '/calendar': '/src/components/calendar/calendar',
     '/login': '/src/components/login/login',
@@ -22,7 +23,7 @@ export function navigate(page) {
 
 async function handleLocation() {
     const path = window.location.pathname;
-    const route = ROUTES[path] || '404';
+    const route = ROUTES[path] || ROUTES['notfound'];
     const html = await fetch(route + '.html').then((data) => data.text());
     document.getElementById('content').innerHTML = html;
 };

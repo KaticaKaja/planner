@@ -12,7 +12,8 @@ export default defineConfig({
                 calendar: resolve(__dirname, './src/components/calendar/calendar.html'),
                 notes: resolve(__dirname, './src/components/notes/notes.html'),
                 todos: resolve(__dirname, './src/components/todos/todos.html'),
-                finance: resolve(__dirname, './src/components/finance/finance.html')
+                finance: resolve(__dirname, './src/components/finance/finance.html'),
+                notfound: resolve(__dirname, './src/components/notfound/notfound.html')
             }
         },
     },
