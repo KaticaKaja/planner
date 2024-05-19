@@ -1,12 +1,4 @@
-# Redirects
 [[redirects]]
-  # Redirect known routes to index.html
-  from = "/calendar|/todos|/login|/register|/notes|/finance"
+  from = "/*"
   to = "/index.html"
   status = 200
-
-[[redirects]]
-  # Redirect all other routes to the custom 404 page
-  from = "/*"
-  to = "/404.html"
-  status = 404
