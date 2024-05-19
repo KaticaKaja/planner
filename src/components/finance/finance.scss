@@ -5,9 +5,9 @@
     padding: 30px;
     margin: 0 auto;
     max-height: 80vh;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     .error {
         border-color: rgb(204, 0, 0)!important;
@@ -51,6 +51,7 @@
 
     h1 {
         text-align: center;
+        margin-bottom: 10px;
     }
 
     #starting_point {
@@ -65,6 +66,7 @@
     }
 
     #your_finance {
+        overflow-y: auto;
 
         h2,
         h3 {

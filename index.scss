@@ -48,7 +48,7 @@ body {
     min-width: 50vw;
     min-height: 50vh;
     margin: auto;
-    position: relative;
+    padding: 15px;
 
     a:hover {
         background-color: rgba(105, 160, 150, 0.9);
@@ -57,7 +57,7 @@ body {
         background-color: rgba(105, 160, 150, 0.9);
     }
 
-    button, textarea {
+    a, button, textarea {
         outline: none;
     }
 }
@@ -81,7 +81,6 @@ footer {
         margin-bottom: 20px;
 
         i {
-            // color: rgb(95, 158, 160);
             color: rgb(95, 160, 150);
             font-size: 30px;
             vertical-align: sub;
