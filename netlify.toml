@@ -1,7 +1,7 @@
 # Redirects
 [[redirects]]
   # Redirect known routes to index.html
-  from = "^/(calendar|todos|login|register|notes|finance)(\/|$)"
+  from = "^/(calendar|todos|login|register|notes|finance)(/|$)"
   to = "/index.html"
   status = 200
 
