@@ -74,7 +74,7 @@ async function validatedUser(ev) {
             console.log('[' + error.name + '] ' + error.message);
         }
         if (users.some((u) => u.email === user.email)) {
-            // navigate('/login');
+            setTimeout(() => document.getElementById('email').classList.add('error'));
             Toastify({
                 text: "This user already exists. Try login, click here",
                 duration: 3000,
@@ -87,17 +87,15 @@ async function validatedUser(ev) {
                 style: {
                   background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
-              }).showToast();
-              delete state.register.user;
-            return;
-        }
+            }).showToast();
+            delete state.register.user;
+            failed = true;
+        } else document.getElementById('email').classList.remove('error');
         if (users.some((u) => u.username === user.username)) {
             document.querySelector('#username').nextElementSibling.nextElementSibling.innerHTML = 'This username is taken';
             document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '130px';
             failed = true;
-            return;
-        }
-        document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '0';
+        } else document.querySelector('#username').nextElementSibling.nextElementSibling.style.maxHeight = '0';
     }
     if (email && !emailRegex.test(user.email)) {
         document.querySelector('#email').nextElementSibling.nextElementSibling.innerHTML = 'Invalid email.';
