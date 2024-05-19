@@ -1,0 +1,23 @@
+<div id="home">
+    <div id="auth" class="noshow">
+        <h1>Welcome, <span id="user"></span></h1>
+        <div class="buttons">
+            <a data-route href="/notes">Notes</a>
+            <a data-route href="/todos">ToDos</a>
+            <a data-route href="/calendar">Calendar</a>
+            <a data-route href="/finance">Finance</a>
+            <a data-route href="/login" id="logout">Logout</a>
+        </div>
+    </div>
+
+    <div id="noauth" class="show">
+        <h1>Welcome to Planner app</h1>
+        <div class="buttons">
+            <div style="text-align: center;">New here?</div>
+            <a data-route href="/register" data-register>Register an account</a>
+            <div style="text-align: center;">Or</div>
+            <a data-route href="/login" data-login>Sign in</a>
+            <div style="text-align: center;">If you already have an account.</div>
+        </div>
+    </div>
+</div>

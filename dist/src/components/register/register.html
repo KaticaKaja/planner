@@ -1,0 +1,28 @@
+<form class="form" name="register" id="register">
+    <h1 class="form_title">Create an account</h1>
+    <div class="form_message form_message_error"></div>
+    <div class="form_input_group">
+        <input type="text" class="form_input" id="username" autofocus autocomplete="on" placeholder="">
+        <label for="name" class="form_label">Username</label>
+        <div class="form_input_error_message"></div>
+    </div>
+    <div class="form_input_group">
+        <input type="text" class="form_input" id="email" autofocus autocomplete="on" placeholder="">
+        <label for="name" class="form_label">Email Address</label>
+        <div class="form_input_error_message"></div>
+    </div>
+    <div class="form_input_group">
+        <input type="password" class="form_input" id="password" autofocus placeholder="">
+        <label for="password" class="form_label">Password</label>
+        <div class="form_input_error_message"></div>
+    </div>
+    <div class="form_input_group">
+        <input type="password" class="form_input" id="confirmpassword" autofocus placeholder="">
+        <label for="password" class="form_label">Confirm Password</label>
+        <div class="form_input_error_message"></div>
+    </div>
+    <button class="form_button" type="submit" id="continue">Continue</button>
+    <p class="form_text">
+        <a class="form_link" data-route href="/login" id="linkCreateAccount">Already have an account? Sign in</a>
+    </p>
+</form>

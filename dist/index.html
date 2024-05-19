@@ -1,0 +1,80 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/assets/icon-CsQ9ZPI2.png"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=block"
+        rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        #loading {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0,0,0,.5);
+        }
+        .loading-wheel {
+            width: 20px;
+            height: 20px;
+            margin-top: -40px;
+            margin-left: -40px;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            border-width: 30px;
+            border-radius: 50%;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        .style-2 .loading-wheel {
+            border-style: double;
+            border-color: #ccc transparent;
+        }
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0);
+            }
+            100% {
+                -webkit-transform: rotate(-360deg);
+            }
+        }
+        @keyframes spin {
+            0% {
+                -webkit-transform: rotate(0);
+            }
+            100% {
+                -webkit-transform: rotate(-360deg);
+            }
+        }
+    </style>
+    <title>My App</title>
+  <script type="module" crossorigin src="/assets/main-BiZx791z.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-BNPoeMat.css">
+</head>
+
+<body>
+    <main id="content" style="visibility: hidden; opacity: 0; transition: all 1s;"></main>
+    <footer style="visibility: hidden;">
+        <div id="links">
+            <div>See the project source code here <a href="https://github.com/KaticaKaja/planner"
+                    target="_blank"><i class="fa-brands fa-github"></i></a></div>
+            <div>Contact me on linkedin <a href="https://www.linkedin.com/in/katica-rankovic/" target="_blank"><i
+                        class="fa-brands fa-linkedin"></i></a></div>
+        </div>
+        <div id="copy">Katica Rankovic &copy; <span id="date">2024</span></div>
+    </footer>
+    <div id="loading" class="style-2"><div class="loading-wheel"></div></div>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<div id="finance">
+    <a data-route href="/" class="fas fa-house"></a>
+    <h1>Expense Tracker for <span class="month"></span></h1>
+    <div id="starting_point" class="show">
+        <h4>Start your expense tracking by filling in this info</h4>
+        <input type="number" id="balance" min="0" placeholder="Enter your current balance..." />
+        <input type="number" id="budget" min="0" placeholder="Enter budget for this month..." />
+        <button class="budget_balance_btn">Confirm</button>
+    </div>
+    <div id="your_finance" class="noshow">
+        <div class="inc_exp_container">
+            <div>
+                <h4>Balance</h4>
+                <p class="money plus balance">+$0.00</p>
+            </div>
+            <div>
+                <h4>Budget</h4>
+                <p class="money plus budget">+$0.00</p>
+            </div>
+            <div>
+                <h4>Expense</h4>
+                <p class="money minus expense">-$0.00</p>
+            </div>
+        </div>
+
+        <div id="history">
+            <button class="fas fa-chart-pie" id="toggle_history"></button>
+            <h3>History</h3>
+            <ul id="list" class="list">
+            </ul>
+            <div id="graph">
+                <canvas class="graph"></canvas>
+            </div>
+        </div>
+        <div id="income_expense">
+            <div>
+                <h3>Add new income</h3>
+                <form id="form_income">
+                    <div class="form_control">
+                        <input type="text" class="desc" maxlength="50" placeholder="Enter income description..." />
+                    </div>
+                    <div class="form_control">
+                        <select class="dropdown">
+                            <option disabled selected>Income category</option>
+                        </select>
+                    </div>
+                    <div class="form_control">
+                        <input type="number" min="1" class="amount" placeholder="Enter amount..." />
+                    </div>
+                    <button class="btn submit">Add income</button>
+                </form>
+            </div>
+            <div>
+                <h3>Add new expense</h3>
+                <form id="form_expense">
+                    <div class="form_control">
+                        <input type="text" class="desc" maxlength="50" placeholder="Enter expense description..." />
+                    </div>
+                    <div class="form_control">
+                        <select class="dropdown">
+                            <option disabled selected>Expense category</option>
+                        </select>
+                    </div>
+                    <div class="form_control">
+                        <input type="number" min="1" class="amount" placeholder="Enter amount..." />
+                    </div>
+                    <button class="btn submit">Add expense</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
