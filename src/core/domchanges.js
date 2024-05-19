@@ -4,6 +4,7 @@ import loadLogin from '../components/login/login';
 import loadRegister from '../components/register/register';
 import loadFinance from '../components/finance/finance';
 import loadNotes from '../components/notes/notes';
+import loadTodos from '../components/todos/todos';
 import { route } from './router';
 
 const targetNode = document.getElementById('content');
@@ -28,6 +29,9 @@ const callback = () => {
     }
     if (window.location.pathname === '/notes') {
         loadNotes();
+    }
+    if (window.location.pathname === '/todos') {
+        loadTodos();
     }
     if (window.location.pathname === '/') {
         loadHome();

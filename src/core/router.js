@@ -5,7 +5,7 @@ const ROUTES = {
     '/login': '/src/components/login/login',
     '/register': '/src/components/register/register',
     '/notes': '/src/components/notes/notes',
-    '/todo': '/src/components/todo/todo',
+    '/todos': '/src/components/todos/todos',
     '/finance': '/src/components/finance/finance'
 };
 

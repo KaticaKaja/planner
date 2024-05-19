@@ -1,7 +1,7 @@
 export const state = {
     register: {},
     login: {},
-    todo: {},
+    todos: {},
     note: {},
     finance: {},
     calendar: {}

@@ -11,7 +11,7 @@ export default defineConfig({
                 register: resolve(__dirname, './src/components/register/register.html'),
                 calendar: resolve(__dirname, './src/components/calendar/calendar.html'),
                 notes: resolve(__dirname, './src/components/notes/notes.html'),
-                todo: resolve(__dirname, './src/components/todo/todo.html'),
+                todos: resolve(__dirname, './src/components/todos/todos.html'),
                 finance: resolve(__dirname, './src/components/finance/finance.html')
             }
         },
