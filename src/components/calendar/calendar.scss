@@ -148,7 +148,7 @@
                 padding-right: 15px;
                 display: flex;
                 flex-direction: column;
-                overflow: scroll;
+                overflow: auto;
 
                 .no-event {
                     margin: auto;
@@ -308,7 +308,7 @@
                     overflow: hidden;
 
                     .days {
-                        overflow: scroll;
+                        overflow: auto;
 
                         .day {
                             aspect-ratio: auto;
