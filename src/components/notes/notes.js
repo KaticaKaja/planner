@@ -6,7 +6,10 @@ export default function load() {
     const openAddNoteBtn = document.querySelector('.add-note'),
         addNoteBtn = document.querySelector('.add-note-btn'),
         addNoteWrapper = document.querySelector('.add-note-wrapper'),
-        addNoteCloseBtn = document.querySelector('.close');
+        addNoteCloseBtn = document.querySelector('.close'),
+        list = document.querySelector('#list'),
+        search = document.getElementById('search'),
+        sort = document.getElementById('sort');
 
     update_list();
 
@@ -28,6 +31,30 @@ export default function load() {
             addNoteWrapper.classList.remove("active");
             wrapper_reset();
         }
+    });
+
+    search.addEventListener('keyup', async(e) => {
+        const notesDB = await DB.getAll('notes', undefined, localStorage.getItem('user'));
+        const filtered = notesDB.filter((n) => (e.target.value !== '') && n.title.includes(e.target.value) || n.text.includes(e.target.value));
+
+        list.innerHTML = '';
+        filtered.forEach((n) => {
+        const hours = n.timestamp.getHours();
+        const minutes = n.timestamp.getMinutes();
+        list.innerHTML +=
+        `<div class="note" data-id="${n.id}">
+            <div class="note-header">
+                <span class="title">${n.title}</span>
+                <i data-id="${n.id}" class="fas fa-trash delete"></i>
+            </div>
+            <div class="note-body">${n.text}</div>
+            <div class="note-footer"><span class="timestamp">${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}. at ${hours < 10 ? '0' +  hours: hours}:${minutes < 10 ? '0' +  minutes: minutes}</span></div>
+        </div>`});
+    });
+
+    sort.addEventListener('change', (e) => {
+        e.stopPropagation();
+        console.log('promenija se', e.target.value);
     });
 
     function wrapper_reset() {
@@ -82,14 +109,57 @@ export default function load() {
         update_list();
     }
 
+    list.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (!e.target.matches('.delete') && e.target.closest('.note')) {
+            addNoteWrapper.classList.add('active');
+            const wrapper_title = document.querySelector('.note-title');
+            const wrapper_text = document.querySelector('.note-text');
+            const title = document.querySelector('.add-note-header .title');
+            const add_btn = document.querySelector('.add-note-footer .add-note-btn');
+            const btn = document.querySelector('.add-note-footer .update-note-btn');
+            const note = await DB.get('notes', e.target.dataset.id || e.target.parentNode.dataset.id || e.target.parentNode.parentNode.dataset.id, localStorage.getItem('user'));
+            wrapper_title.value = note.title;
+            wrapper_text.value = note.text;
+            title.innerHTML = 'Edit this note';
+            add_btn.style.display = 'none';
+            btn.style.display = 'block';
+            btn.dataset.id = note.id;
+            return;
+        }
+        if (e.target.matches('.delete')) {
+            DB.delete('notes', e.target.dataset.id, localStorage.getItem('user')).then(() => {
+                Toastify({
+                    text: 'Note deleted succesfully',
+                    duration: 2000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "center", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+                search.value = '';
+            });
+            update_list();
+            return;
+        }
+        if (!e.target.matches('.delete') && !e.target.closest('.note')) {
+            addNoteWrapper.classList.remove("active");
+            wrapper_reset();
+        }
+    })
+
     async function update_list() {
-        const list = document.querySelector('#list');
         const notes = await DB.getAll('notes', undefined, localStorage.getItem('user'));
         list.innerHTML = '';
         if (notes.length === 0) {
             list.innerHTML = '<h2>No notes found yet... start typing :)</h2>'
         }
         notes.forEach((n) => {
+            const hours = n.timestamp.getHours();
+            const minutes = n.timestamp.getMinutes();
             list.innerHTML += `
             <div class="note" data-id="${n.id}">
                 <div class="note-header">
@@ -97,48 +167,8 @@ export default function load() {
                     <i data-id="${n.id}" class="fas fa-trash delete"></i>
                 </div>
                 <div class="note-body">${n.text}</div>
-                <div class="note-footer"><span class="timestamp">${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}.</span></div>
+                <div class="note-footer"><span class="timestamp">${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}. at ${hours < 10 ? '0' +  hours: hours}:${minutes < 10 ? '0' +  minutes: minutes}</span></div>
             </div>`;
-        });
-        const notes_el = document.querySelectorAll('.note');
-        notes_el.forEach((n) => {
-            n.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                addNoteWrapper.classList.add('active');
-                const wrapper_title = document.querySelector('.note-title');
-                const wrapper_text = document.querySelector('.note-text');
-                const title = document.querySelector('.add-note-header .title');
-                const add_btn = document.querySelector('.add-note-footer .add-note-btn');
-                const btn = document.querySelector('.add-note-footer .update-note-btn');
-                const note = await DB.get('notes', e.target.dataset.id || e.target.parentNode.dataset.id || e.target.parentNode.parentNode.dataset.id, localStorage.getItem('user'));
-                wrapper_title.value = note.title;
-                wrapper_text.value = note.text;
-                title.innerHTML = 'Edit this note';
-                add_btn.style.display = 'none';
-                btn.style.display = 'block';
-                btn.dataset.id = note.id;
-            });
-        });
-
-        const deleteNoteBtns = document.querySelectorAll('.delete');
-        deleteNoteBtns.forEach((b) => {
-            b.addEventListener('click', (e) => {
-                e.stopPropagation();
-                DB.delete('notes', e.target.dataset.id, localStorage.getItem('user')).then(() => {
-                    Toastify({
-                        text: 'Note deleted succesfully',
-                        duration: 2000,
-                        close: true,
-                        gravity: "top", // `top` or `bottom`
-                        position: "center", // `left`, `center` or `right`
-                        stopOnFocus: true, // Prevents dismissing of toast on hover
-                        style: {
-                          background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        }
-                    }).showToast();
-                });
-                update_list();
-            });
         });
     }
 

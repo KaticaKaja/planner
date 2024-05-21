@@ -28,15 +28,44 @@
     }
 
     .scrollable {
-        overflow-y: auto;
-        max-height: 80vh;
         flex-grow: 1;
+
+        #sort_search {
+            display: flex;
+            margin-bottom: 20px;
+            max-width: 600px;
+
+            #sort {
+                width: 50%;
+                border: none;
+                border-bottom: 2px solid rgb(240, 236, 236);
+                outline: 0;
+                font-size: 16px;
+                color: rgb(240, 236, 236);
+                padding: 7px 0px;
+                background: transparent;
+                margin: 0px 10px 0px 15px;
+            }
+
+            #search {
+                width: 50%;
+                margin: 0px 15px 0px 10px;
+
+                &::placeholder {
+                    opacity: 0.6!important;
+                }
+            }
+        }
+
+
     }
 
     #list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 10px;
+        max-height: 65vh;
+        overflow-y: auto;
 
         .note {
             border-radius: 20px;
@@ -65,7 +94,7 @@
 
 
                 .title {
-                    color: rgb(111,154,138);
+                    color: rgb(111, 154, 138);
                     font-weight: 400;
                     max-width: 90%;
                     text-overflow: ellipsis;
@@ -75,7 +104,7 @@
 
                 .timestamp {
                     font-size: 0.8rem;
-                    color: rgb(111,154,138);
+                    color: rgb(111, 154, 138);
                 }
 
                 .delete {
@@ -83,7 +112,7 @@
                     cursor: pointer;
 
                     &:hover {
-                        color: rgb(111,154,138);
+                        color: rgb(111, 154, 138);
                     }
                 }
             }
@@ -91,20 +120,27 @@
             .note-body {
                 flex-grow: 1;
                 overflow-y: auto;
-                color: rgb(111,154,138);
+                color: rgb(111, 154, 138);
                 margin-bottom: 20px;
             }
 
             .note-footer {
                 position: absolute;
                 border-radius: 20px;
-                padding: 0px 20px 5px 0px;
+                padding: 0px 15px;
+                margin-top: 20px;
                 bottom: 0;
-                right: 0;
+                left: 0;
+                max-width: 80%;
 
                 .timestamp {
                     font-size: 0.8rem;
-                    color: rgb(111,154,138);
+                    color: rgb(111, 154, 138);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: inline-block;
+                    max-width: 100%;
                 }
             }
 
@@ -120,7 +156,7 @@
         width: 0;
         overflow: hidden;
         border-radius: 0px 20px 0 20px;
-        background-color: rgb(111,154,138);
+        background-color: rgb(111, 154, 138);
         transition: all 0.5s ease;
         z-index: 2;
 
@@ -156,12 +192,12 @@
                 border: 2px solid white;
                 margin-top: 10px;
                 flex-grow: 1;
-                color: rgb(111,154,138);
+                color: rgb(111, 154, 138);
                 font-weight: 400;
                 padding: 10px;
                 border-radius: 20px;
                 resize: none;
-                width: calc(100% - 20px)!important;
+                width: calc(100% - 20px) !important;
                 transition: border-color 0.4s;
             }
         }
@@ -203,9 +239,10 @@
         align-self: flex-end;
         margin-top: 10px;
     }
+
     .add-note:hover {
         opacity: 1;
-        background-color: rgb(111,154,138);
+        background-color: rgb(111, 154, 138);
     }
 
     button {
@@ -223,7 +260,7 @@
         font-size: 16px;
         color: rgb(240, 236, 236);
         padding: 7px 0;
-        background: transparent!important;
+        background: transparent !important;
         transition: border-color 0.4s;
 
         &::placeholder {
@@ -235,22 +272,22 @@
 
 @media screen and (max-width: 1110px) {
     #list {
-        grid-template-columns: repeat(2, 1fr)!important;
+        grid-template-columns: repeat(2, 1fr) !important;
         grid-gap: 5px;
 
         .note {
-            max-width: 100%!important;
+            max-width: 100% !important;
         }
     }
 }
 
 @media screen and (max-width: 700px) {
     #list {
-        grid-template-columns: repeat(1, 1fr)!important;
+        grid-template-columns: repeat(1, 1fr) !important;
         grid-gap: 5px;
 
         .note {
-            max-width: 100%!important;
+            max-width: 100% !important;
         }
     }
 }
