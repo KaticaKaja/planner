@@ -168,6 +168,7 @@ export const DB = {
     },
     get: (table, id, username = undefined) => {
         return new Promise(async (resolve, reject) => {
+            if (!id) return;
             let tx = await makeTX(username, table, 'readonly');
             //if there is a necessity for a specific action on complete, move tx.oncompletete here
             let store = tx.objectStore(table);

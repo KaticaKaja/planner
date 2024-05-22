@@ -10,18 +10,18 @@ export default function load() {
         addTodoCloseBtn = document.querySelector('.close'),
         btnItem = document.querySelector('.item_btn'),
         inputItem = document.querySelector('.input_item'),
-        list = document.querySelector('#list');
-        // search = document.querySelector('#search'),
-        // sort = document.querySelector('#sort');
+        list = document.querySelector('#list'),
+        search = document.querySelector('#search'),
+        sort = document.querySelector('#sort');
 
-    // let conditions = {
-    //     search: {
-    //         value: ''
-    //     },
-    //     sort: {
-    //         value: ''
-    //     }
-    // }
+    let conditions = {
+        search: {
+            value: ''
+        },
+        sort: {
+            value: ''
+        }
+    }
 
     update_list();
 
@@ -48,17 +48,84 @@ export default function load() {
         }
     });
 
-    // search.addEventListener('keyup', async(e) => {
-    //     e.stopPropagation();
-    //     conditions.search.value = e.target.value;
-    //     update_list();
-    // });
+    search.addEventListener('keyup', async(e) => {
+        e.stopPropagation();
+        conditions.search.value = e.target.value;
+        update_list();
+    });
 
-    // sort.addEventListener('change', async (e) => {
-    //     e.stopPropagation();
-    //     conditions.sort.value = e.target.value;
-    //     update_list();
-    // });
+    sort.addEventListener('change', async (e) => {
+        e.stopPropagation();
+        conditions.sort.value = e.target.value;
+        update_list();
+    });
+
+    list.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+            const todoId = e.target.dataset.todoId;
+            const itemId = e.target.dataset.itemId;
+            const done = e.target.checked;
+            const todo = await DB.get('todos', todoId, localStorage.getItem('user'));
+
+            const updated_todo = {
+                id: todo.id,
+                title: todo.title,
+                items: todo.items.map((item) => {
+                    if (item.id === itemId) return { ...item, done: done };
+                    else return item
+                }),
+                timestamp: new Date()
+            }
+
+            DB.update('todos', updated_todo, localStorage.getItem('user'));
+            return;
+        }
+        if (!e.target.matches('.delete') && e.target.closest('.todo')) {
+            if (todoWrapper.classList.contains('active')) wrapper_reset();
+            todoWrapper.classList.add('active');
+            const wrapper_title = document.querySelector('.todo_title');
+            const items_container = document.querySelector('.items_container');
+            const title = document.querySelector('.wrapper_todo_header .title');
+            const todo = await DB.get('todos', e.target.dataset.id || e.target.parentNode.dataset.id || e.target.parentNode.parentNode.dataset.id, localStorage.getItem('user'));
+            wrapper_title.value = todo.title;
+            todo.items.forEach((item) => {
+                items_container.innerHTML += `
+                <input type="text" class="input_item" data-item-id="${item.id}" data-item-done="${item.done}" value="${item.text}"/>
+            `;
+            });
+
+            title.innerHTML = 'Edit this todo';
+            addTodoBtn.classList.remove('open');
+            addTodoBtn.classList.add('close');
+            updateTodoBtn.classList.remove('close');
+            updateTodoBtn.classList.add('open');
+            updateTodoBtn.dataset.id = todo.id;
+            return;
+        }
+
+        if (e.target.matches('.delete')) {
+            DB.delete('todos', e.target.dataset.id, localStorage.getItem('user')).then(() => {
+                Toastify({
+                    text: 'Todo deleted succesfully',
+                    duration: 2000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "center", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            });
+            update_list();
+            return;
+        }
+        if (!e.target.matches('.delete') && !e.target.closest('.note')) {
+            todoWrapper.classList.remove("active");
+            wrapper_reset();
+        }
+    });
 
     function wrapper_reset() {
         const wrapper_title = document.querySelector('.todo_title');
@@ -158,7 +225,7 @@ export default function load() {
                 done: l.dataset.itemDone === 'true' ? true : false
             };
         }).filter(item => item !== null && item !== undefined);
-        console.log('items', items);
+
         if (items.length === 0) {
             Toastify({
                 text: "Please enter at least one todo item",
@@ -220,8 +287,20 @@ export default function load() {
     }
 
     async function update_list() {
-        const todos = await DB.getAll('todos', undefined, localStorage.getItem('user'));
+        let todos = await DB.getAll('todos', undefined, localStorage.getItem('user'));
         list.innerHTML = '';
+        if (conditions.search.value) {
+            todos = todos.filter((t) => t.title.includes(conditions.search.value) || t.items.some(i => i.text.includes(conditions.search.value)));
+            console.log('todos', todos);
+        }
+        if (conditions.sort.value) {
+            if (conditions.sort.value === 'newest') todos = todos.sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+            if (conditions.sort.value === 'oldest') todos = todos.sort((a,b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+        }
+        if (conditions.search.value && todos.length === 0) {
+            list.innerHTML = '<h2>No todos found with this search</h2>'
+            return;
+        }
         if (todos.length === 0) {
             list.innerHTML = '<h2>No todos found yet... start typing :)</h2>'
         }
@@ -232,6 +311,8 @@ export default function load() {
                     <label for="item-${item.id}">${item.text}</label>
                 </div>
             `).join('');
+            const hours = t.timestamp.getHours();
+            const minutes = t.timestamp.getMinutes();
             list.innerHTML += `
             <div class="todo" data-id="${t.id}">
                 <div class="todo_header">
@@ -242,80 +323,9 @@ export default function load() {
                     ${todoItems}
                 </div>
                 <div class="todo_footer">
-                    <span class="timestamp">${t.timestamp.toString().split(' ')[0]}, ${t.timestamp.getDate()}. ${t.timestamp.getMonth() + 1}. ${t.timestamp.getFullYear()}.</span>
+                    <span class="timestamp">${t.timestamp.toString().split(' ')[0]}, ${t.timestamp.getDate()}. ${t.timestamp.getMonth() + 1}. ${t.timestamp.getFullYear()}. at ${hours < 10 ? '0' +  hours: hours}:${minutes < 10 ? '0' +  minutes: minutes}</span>
                 </div>
             </div>`;
-        });
-
-        const todos_el = document.querySelectorAll('.todo');
-        todos_el.forEach((t) => {
-            t.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
-                if (todoWrapper.classList.contains('active')) wrapper_reset(); // todoWrapper is shaking, try to fix
-                todoWrapper.classList.add('active');
-                const wrapper_title = document.querySelector('.todo_title');
-                const items_container = document.querySelector('.items_container');
-                const title = document.querySelector('.wrapper_todo_header .title');
-                const todo = await DB.get('todos', e.target.dataset.id || e.target.parentNode.dataset.id || e.target.parentNode.parentNode.dataset.id, localStorage.getItem('user'));
-                wrapper_title.value = todo.title;
-                todo.items.forEach((item) => {
-                    items_container.innerHTML += `
-                    <input type="text" class="input_item" data-item-id="${item.id}" data-item-done="${item.done}" value="${item.text}"/>
-                `;
-                });
-
-                title.innerHTML = 'Edit this todo';
-                addTodoBtn.classList.remove('open');
-                addTodoBtn.classList.add('close');
-                updateTodoBtn.classList.remove('close');
-                updateTodoBtn.classList.add('open');
-                updateTodoBtn.dataset.id = todo.id;
-            });
-        });
-
-        const checkboxes = document.querySelectorAll('.todo_item input[type="checkbox"]');
-        checkboxes.forEach((cb) => {
-            cb.addEventListener('change', async (e) => {
-                const todoId = e.target.dataset.todoId;
-                const itemId = e.target.dataset.itemId;
-                const done = e.target.checked;
-
-                const todo = await DB.get('todos', todoId, localStorage.getItem('user'));
-
-                const updated_todo = {
-                    id: todo.id,
-                    title: todo.title,
-                    items: todo.items.map((item) => {
-                        if (item.id === itemId) return { ...item, done: done };
-                        else return item
-                    }),
-                    timestamp: new Date()
-                }
-
-                DB.update('todos', updated_todo, localStorage.getItem('user'));
-            });
-        })
-
-        const deleteTodoBtns = document.querySelectorAll('.delete');
-        deleteTodoBtns.forEach((b) => {
-            b.addEventListener('click', (e) => {
-                e.stopPropagation();
-                DB.delete('todos', e.target.dataset.id, localStorage.getItem('user')).then(() => {
-                    Toastify({
-                        text: 'Todo deleted succesfully',
-                        duration: 2000,
-                        close: true,
-                        gravity: "top", // `top` or `bottom`
-                        position: "center", // `left`, `center` or `right`
-                        stopOnFocus: true, // Prevents dismissing of toast on hover
-                        style: {
-                          background: "linear-gradient(to right, #00b09b, #96c93d)",
-                        }
-                    }).showToast();
-                });
-                update_list();
-            });
         });
     }
 }

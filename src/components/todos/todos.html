@@ -1,6 +1,14 @@
 <div id="todos">
     <a data-route class="fas fa-house" href="/"></a>
     <div class="scrollable">
+        <div id="sort_search">
+            <select id="sort">
+                <option disabled selected value="none">Sort Todos</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+            </select>
+            <input type="text" id="search" placeholder="Search todos...">
+        </div>
         <div id="list">
         </div>
     </div>
