@@ -55,7 +55,7 @@
                 background-color: rgba(250, 235, 215, 1);
             }
 
-            .todo-header {
+            .todo_header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -83,7 +83,7 @@
                 }
             }
 
-            .todo-body {
+            .todo_body {
                 flex-grow: 1;
                 color: rgb(111,154,138);
                 display: flex;
@@ -91,7 +91,7 @@
                 overflow-y: auto;
                 margin-bottom: 20px;
 
-                .todo-item {
+                .todo_item {
                     display: flex;
                     align-items: center;
                     cursor: pointer;
@@ -113,13 +113,13 @@
                     }
                 }
 
-                .todo-item input[type="checkbox"]:checked + label {
+                .todo_item input[type="checkbox"]:checked + label {
                     text-decoration: line-through;
                     color: #888;
                 }
             }
 
-            .todo-footer {
+            .todo_footer {
                 position: absolute;
                 border-radius: 20px;
                 padding: 0px 20px 5px 0px;
@@ -135,7 +135,7 @@
         }
     }
 
-    .add-todo-wrapper {
+    .todo_wrapper {
         position: absolute;
         bottom: 50px;
         right: 50px;
@@ -160,7 +160,7 @@
             flex-direction: column;
         }
 
-        .add-todo-header {
+        .wrapper_todo_header {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -171,7 +171,7 @@
             }
         }
 
-        .add-todo-body {
+        .wrapper_todo_body {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -211,7 +211,7 @@
             }
         }
 
-        .add-todo-footer {
+        .wrapper_todo_footer {
             display: flex;
             justify-content: center;
 
@@ -222,10 +222,14 @@
                 background-color: transparent;
                 cursor: pointer;
                 opacity: 0.6;
-            }
 
-            .update-todo-btn {
-                display: none;
+                &.open {
+                    display: block;
+                }
+
+                &.close {
+                    display: none;
+                }
             }
 
             button:hover {
@@ -234,7 +238,7 @@
         }
     }
 
-    .add-todo {
+    .open_wrapper {
         min-width: 40px;
         min-height: 40px;
         font-size: 1rem;
@@ -247,7 +251,7 @@
         align-self: flex-end;
         margin-top: 10px;
     }
-    .add-todo:hover {
+    .open_wrapper:hover {
         opacity: 1;
         background-color: rgb(111,154,138);
     }

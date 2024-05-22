@@ -3,71 +3,94 @@ import { DB, uid } from '../../core/db.js';
 import Toastify from 'toastify-js';
 
 export default function load() {
-    const openAddTodoBtn = document.querySelector('.add-todo'),
-        addTodoBtn = document.querySelector('.add-todo-btn'),
-        updateTodoBtn = document.querySelector('.update-todo-btn'),
-        addTodoWrapper = document.querySelector('.add-todo-wrapper'),
+    const openWrapperBtn = document.querySelector('.open_wrapper'),
+        addTodoBtn = document.querySelector('.add_todo_btn'),
+        updateTodoBtn = document.querySelector('.update_todo_btn'),
+        todoWrapper = document.querySelector('.todo_wrapper'),
         addTodoCloseBtn = document.querySelector('.close'),
-        btn_item = document.querySelector('.item_btn'),
-        input_item = document.querySelector('.input_item');
+        btnItem = document.querySelector('.item_btn'),
+        inputItem = document.querySelector('.input_item'),
+        list = document.querySelector('#list');
+        // search = document.querySelector('#search'),
+        // sort = document.querySelector('#sort');
 
-    openAddTodoBtn.addEventListener('click', (e) => {
+    // let conditions = {
+    //     search: {
+    //         value: ''
+    //     },
+    //     sort: {
+    //         value: ''
+    //     }
+    // }
+
+    update_list();
+
+    openWrapperBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        addTodoWrapper.classList.toggle('active');
+        todoWrapper.classList.toggle('active');
         wrapper_reset();
     });
     addTodoCloseBtn.addEventListener('click', () => {
-        addTodoWrapper.classList.remove('active');
+        todoWrapper.classList.remove('active');
         wrapper_reset();
     });
     addTodoBtn.addEventListener('click', add_todo);
     updateTodoBtn.addEventListener('click', update_todo);
-    btn_item.addEventListener('click', add_item);
-    input_item.addEventListener("keypress", (e) => {
+    btnItem.addEventListener('click', add_item);
+    inputItem.addEventListener("keypress", (e) => {
         if (e.key === "Enter") add_item();
     });
 
     document.querySelector('#todos').addEventListener('click', (e) => {
-        if (e.target !== openAddTodoBtn && !addTodoWrapper.contains(e.target)) {
-            addTodoWrapper.classList.remove("active");
+        if (e.target !== openWrapperBtn && !todoWrapper.contains(e.target)) {
+            todoWrapper.classList.remove("active");
             wrapper_reset();
         }
     });
 
-    update_list();
+    // search.addEventListener('keyup', async(e) => {
+    //     e.stopPropagation();
+    //     conditions.search.value = e.target.value;
+    //     update_list();
+    // });
+
+    // sort.addEventListener('change', async (e) => {
+    //     e.stopPropagation();
+    //     conditions.sort.value = e.target.value;
+    //     update_list();
+    // });
 
     function wrapper_reset() {
-        const wrapper_title = document.querySelector('.todo-title');
+        const wrapper_title = document.querySelector('.todo_title');
         wrapper_title.value = '';
         wrapper_title.classList.remove('error');
         const items_container = document.querySelector('.items_container');
         items_container.innerHTML = '';
-        const title = document.querySelector('.add-todo-header .title');
+        const title = document.querySelector('.wrapper_todo_header .title');
         title.innerHTML = 'New Todo';
-        const add_btn = document.querySelector('.add-todo-footer .add-todo-btn');
-        add_btn.style.display = 'block';
-        const btn = document.querySelector('.add-todo-footer .update-todo-btn');
-        btn.style.display = 'none';
+        addTodoBtn.classList.remove('close');
+        addTodoBtn.classList.add('open');
+        updateTodoBtn.classList.remove('open');
+        updateTodoBtn.classList.add('close');
     }
 
     function add_item() {
-        const input_item = document.querySelector('.input_item');
         const items_container = document.querySelector('.items_container');
 
-        if (!input_item.value) {
-            input_item.classList.add('error');
+        if (!inputItem.value) {
+            inputItem.classList.add('error');
             return;
-        } else input_item.classList.remove('error');
+        } else inputItem.classList.remove('error');
 
         items_container.innerHTML += `
-            <input type="text" class="input_item" data-item-id="${uid()}" data-item-done="${false}" value="${input_item.value}"/>`;
-        input_item.value = '';
+            <input type="text" class="input_item" data-item-id="${uid()}" data-item-done="${false}" value="${inputItem.value}"/>`;
+            inputItem.value = '';
     }
 
     function add_todo() {
-        const title = document.querySelector('.todo-title');
+        const title = document.querySelector('.todo_title');
         const labels = document.querySelectorAll('.input_item');
-        if (!title.value && addTodoWrapper.classList.contains('active')) title.classList.add('error');
+        if (!title.value && todoWrapper.classList.contains('active')) title.classList.add('error');
         else title.classList.remove('error');
         if (!title.value) return;
         const items = Array.from(labels).map(l => {
@@ -115,16 +138,16 @@ export default function load() {
             }).showToast();
         });
 
-        document.querySelector('.todo-title').value = '';
+        document.querySelector('.todo_title').value = '';
         document.querySelector('.items_container').innerHTML = '';
-        addTodoWrapper.classList.remove('active');
+        todoWrapper.classList.remove('active');
         update_list();
     }
 
     async function update_todo(e) {
-        const title = document.querySelector('.todo-title');
+        const title = document.querySelector('.todo_title');
         const labels = document.querySelectorAll('.input_item');
-        if (!title.value && addTodoWrapper.classList.contains('active')) title.classList.add('error');
+        if (!title.value && todoWrapper.classList.contains('active')) title.classList.add('error');
         else title.classList.remove('error');
         if (!title.value) return;
         const items = Array.from(labels).map(l => {
@@ -165,7 +188,7 @@ export default function load() {
                 }
             }).showToast();
             wrapper_reset();
-            addTodoWrapper.classList.remove('active');
+            todoWrapper.classList.remove('active');
             return;
         }
 
@@ -190,14 +213,13 @@ export default function load() {
             }).showToast();
         });
 
-        document.querySelector('.todo-title').value = '';
+        document.querySelector('.todo_title').value = '';
         document.querySelector('.items_container').innerHTML = '';
-        addTodoWrapper.classList.remove('active');
+        todoWrapper.classList.remove('active');
         update_list();
     }
 
     async function update_list() {
-        const list = document.querySelector('#list');
         const todos = await DB.getAll('todos', undefined, localStorage.getItem('user'));
         list.innerHTML = '';
         if (todos.length === 0) {
@@ -205,21 +227,21 @@ export default function load() {
         }
         todos.forEach((t) => {
             let todoItems = t.items.map(item => `
-                <div class="todo-item">
+                <div class="todo_item">
                     <input type="checkbox" id="item-${item.id}" data-todo-id="${t.id}" data-item-id="${item.id}" ${item.done ? 'checked' : ''}>
                     <label for="item-${item.id}">${item.text}</label>
                 </div>
             `).join('');
             list.innerHTML += `
             <div class="todo" data-id="${t.id}">
-                <div class="todo-header">
+                <div class="todo_header">
                     <span class="title">${t.title}</span>
                     <i data-id="${t.id}" class="fas fa-trash delete"></i>
                 </div>
-                <div class="todo-body">
+                <div class="todo_body">
                     ${todoItems}
                 </div>
-                <div class="todo-footer">
+                <div class="todo_footer">
                     <span class="timestamp">${t.timestamp.toString().split(' ')[0]}, ${t.timestamp.getDate()}. ${t.timestamp.getMonth() + 1}. ${t.timestamp.getFullYear()}.</span>
                 </div>
             </div>`;
@@ -230,13 +252,11 @@ export default function load() {
             t.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
-                if (addTodoWrapper.classList.contains('active')) wrapper_reset(); // addTodoWrapper is shaking, try to fix
-                addTodoWrapper.classList.add('active');
-                const wrapper_title = document.querySelector('.todo-title');
+                if (todoWrapper.classList.contains('active')) wrapper_reset(); // todoWrapper is shaking, try to fix
+                todoWrapper.classList.add('active');
+                const wrapper_title = document.querySelector('.todo_title');
                 const items_container = document.querySelector('.items_container');
-                const title = document.querySelector('.add-todo-header .title');
-                const add_btn = document.querySelector('.add-todo-footer .add-todo-btn');
-                const btn = document.querySelector('.add-todo-footer .update-todo-btn');
+                const title = document.querySelector('.wrapper_todo_header .title');
                 const todo = await DB.get('todos', e.target.dataset.id || e.target.parentNode.dataset.id || e.target.parentNode.parentNode.dataset.id, localStorage.getItem('user'));
                 wrapper_title.value = todo.title;
                 todo.items.forEach((item) => {
@@ -246,13 +266,15 @@ export default function load() {
                 });
 
                 title.innerHTML = 'Edit this todo';
-                add_btn.style.display = 'none';
-                btn.style.display = 'block';
-                btn.dataset.id = todo.id;
+                addTodoBtn.classList.remove('open');
+                addTodoBtn.classList.add('close');
+                updateTodoBtn.classList.remove('close');
+                updateTodoBtn.classList.add('open');
+                updateTodoBtn.dataset.id = todo.id;
             });
         });
 
-        const checkboxes = document.querySelectorAll('.todo-item input[type="checkbox"]');
+        const checkboxes = document.querySelectorAll('.todo_item input[type="checkbox"]');
         checkboxes.forEach((cb) => {
             cb.addEventListener('change', async (e) => {
                 const todoId = e.target.dataset.todoId;
