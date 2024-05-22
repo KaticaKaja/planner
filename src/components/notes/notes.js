@@ -154,7 +154,7 @@ export default function load() {
         let notes = await DB.getAll('notes', undefined, localStorage.getItem('user'));
         list.innerHTML = '';
         if (conditions.search.value) {
-            notes = notes.filter((n) => (conditions.value !== '') && n.title.includes(conditions.search.value) || n.text.includes(conditions.search.value));
+            notes = notes.filter((n) => n.title.includes(conditions.search.value) || n.text.includes(conditions.search.value));
         }
         if (conditions.sort.value) {
             if (conditions.sort.value === 'newest') notes = notes.sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
