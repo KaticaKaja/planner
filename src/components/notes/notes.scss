@@ -67,6 +67,10 @@
         max-height: 65vh;
         overflow-y: auto;
 
+        h2 {
+            grid-column: span 2;
+        }
+
         .note {
             border-radius: 20px;
             background-color: rgba(250, 235, 215, 0.8);
@@ -84,7 +88,7 @@
                 background-color: rgba(250, 235, 215, 1);
             }
 
-            .note-header {
+            .note_header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -117,14 +121,14 @@
                 }
             }
 
-            .note-body {
+            .note_body {
                 flex-grow: 1;
                 overflow-y: auto;
                 color: rgb(111, 154, 138);
                 margin-bottom: 20px;
             }
 
-            .note-footer {
+            .note_footer {
                 position: absolute;
                 border-radius: 20px;
                 padding: 0px 15px;
@@ -147,7 +151,7 @@
         }
     }
 
-    .add-note-wrapper {
+    .note_wrapper {
         position: absolute;
         bottom: 50px;
         right: 50px;
@@ -172,7 +176,7 @@
             flex-direction: column;
         }
 
-        .add-note-header {
+        .wrapper_note_header {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -183,12 +187,12 @@
             }
         }
 
-        .add-note-body {
+        .wrapper_note_body {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
 
-            .note-text {
+            .note_text {
                 border: 2px solid white;
                 margin-top: 10px;
                 flex-grow: 1;
@@ -202,7 +206,7 @@
             }
         }
 
-        .add-note-footer {
+        .wrapper_note_footer {
             display: flex;
             justify-content: center;
             margin-top: 10px;
@@ -214,10 +218,14 @@
                 background-color: transparent;
                 cursor: pointer;
                 opacity: 0.6;
-            }
 
-            .update-note-btn {
-                display: none;
+                &.open {
+                    display: block;
+                }
+
+                &.close {
+                    display: none;
+                }
             }
 
             button:hover {
@@ -226,7 +234,7 @@
         }
     }
 
-    .add-note {
+    .open_wrapper {
         min-width: 40px;
         min-height: 40px;
         font-size: 1rem;
@@ -240,7 +248,7 @@
         margin-top: 10px;
     }
 
-    .add-note:hover {
+    .open_wrapper:hover {
         opacity: 1;
         background-color: rgb(111, 154, 138);
     }
