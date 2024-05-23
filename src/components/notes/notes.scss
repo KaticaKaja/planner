@@ -27,37 +27,31 @@
         padding: 10px;
     }
 
-    .scrollable {
-        flex-grow: 1;
+    #sort_search {
+        display: flex;
+        margin-bottom: 20px;
+        max-width: 600px;
 
-        #sort_search {
-            display: flex;
-            margin-bottom: 20px;
-            max-width: 600px;
-
-            #sort {
-                width: 50%;
-                border: none;
-                border-bottom: 2px solid rgb(240, 236, 236);
-                outline: 0;
-                font-size: 16px;
-                color: rgb(240, 236, 236);
-                padding: 7px 0px;
-                background: transparent;
-                margin: 0px 10px 0px 15px;
-            }
-
-            #search {
-                width: 50%;
-                margin: 0px 15px 0px 10px;
-
-                &::placeholder {
-                    opacity: 0.6!important;
-                }
-            }
+        #sort {
+            width: 50%;
+            border: none;
+            border-bottom: 2px solid rgb(240, 236, 236);
+            outline: 0;
+            font-size: 16px;
+            color: rgb(240, 236, 236);
+            padding: 7px 0px;
+            background: transparent;
+            margin: 0px 10px 0px 15px;
         }
 
+        #search {
+            width: 50%;
+            margin: 0px 15px 0px 10px;
 
+            &::placeholder {
+                opacity: 0.6!important;
+            }
+        }
     }
 
     #list {
