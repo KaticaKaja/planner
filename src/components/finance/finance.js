@@ -5,10 +5,10 @@ import Toastify from 'toastify-js';
 import Chart from 'chart.js/auto';
 
 export default function load() {
-    const EXPENSE_CATEGORIES = ['entertainment', 'household', 'food', 'apparel', 'gift', 'social life', 'health', 'transport', 'subscriptions', 'bank(credit, provisions...)', 'other'];
-    const INCOME_CATEGORIES = ['salary', 'side hustle', 'other'];
-    const MONTHS = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July',
-                    'August', 'September', 'October', 'November', 'December'];
+    const EXPENSE_CATEGORIES = ['Entertainment', 'Household', 'Food', 'Apparel', 'Gift', 'Social life', 'Health', 'Transport', 'Subscriptions', 'Bank(credit, provisions...)', 'Other'];
+    const INCOME_CATEGORIES = ['Salary', 'Side hustle', 'Other'];
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+        'August', 'September', 'October', 'November', 'December'];
 
     if (localStorage.getItem('isLoggedIn') === null) {
         navigate('/login');
@@ -20,7 +20,7 @@ export default function load() {
             position: 'center', // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
             }
         }).showToast();
         return;
@@ -34,7 +34,7 @@ export default function load() {
         const financeAll = await DB.getAll('finance', undefined, localStorage.getItem('user'));
         const today = new Date();
         const balance_budget = financeAll.find((f) => f.month === MONTHS[today.getMonth()] && f.year === today.getFullYear());
-        document.querySelector('.month').innerHTML =  MONTHS[today.getMonth()];
+        document.querySelector('.month').innerHTML = MONTHS[today.getMonth()];
         if (!balance_budget) {
             document.getElementById('starting_point').classList.remove('noshow');
             document.getElementById('starting_point').classList.add('show');
@@ -107,7 +107,7 @@ export default function load() {
         expenses_incomes.sort((a, b) => b.timestamp - a.timestamp);
         list.innerHTML = '';
         if (expenses.length === 0) document.getElementById('toggle_history').style.display = 'none';
-        else  document.getElementById('toggle_history').style.display = 'block';
+        else document.getElementById('toggle_history').style.display = 'block';
         if (expenses_incomes.length === 0) list.previousElementSibling.innerHTML = 'No History';
         else list.previousElementSibling.innerHTML = 'History';
         expenses_incomes.forEach((ei) => {
@@ -117,12 +117,12 @@ export default function load() {
                                         <button data-id=${ei.id} class="delete-btn">x</button>
                                     </li>`;
                 expense_amount += Number(ei.amount);
-            }else {
+            } else {
                 list.innerHTML += `<li class="plus">
                                         <span>${ei.desc}</span><span>+$${ei.amount}</span>
                                         <button data-id=${ei.id} class="delete-btn">x</button>
                                     </li>`;
-                income_amount +=  Number(ei.amount);
+                income_amount += Number(ei.amount);
             }
             document.querySelectorAll('#list button').forEach((b) => {
                 b.addEventListener('click', (e) => {
@@ -131,7 +131,7 @@ export default function load() {
                 });
             })
         });
-        expense.innerHTML = '-$'+ expense_amount;
+        expense.innerHTML = '-$' + expense_amount;
         budget.innerHTML = '$' + (balance_budget.budget - expense_amount);
         balance.innerHTML = '$' + (balance_budget.balance + income_amount - expense_amount);
         if (balance_budget.budget - expense_amount < 0) {
@@ -207,7 +207,7 @@ export default function load() {
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
 
@@ -222,37 +222,62 @@ export default function load() {
             document.getElementById('list').classList.add('close');
             document.getElementById('graph').classList.add('open');
             document.getElementById('toggle_history').className = 'fas fa-list';
+            const aggregatedData = expenses.reduce((acc, expense) => {
+                if (!acc[expense.category]) {
+                  acc[expense.category] = 0;
+                }
+                acc[expense.category] += expense.amount;
+                return acc;
+              }, {});
+            const categories = Object.keys(aggregatedData);
+            const amounts = Object.values(aggregatedData);
             mychart = new Chart(
                 document.querySelector('.graph'),
                 {
-                  type: 'pie',
-                  data: {
-                    labels: expenses.map(ei => ei.category),
-                    datasets: [
-                      {
-                        label: 'Expenses by category',
-                        data: expenses.map(ei => ei.amount),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.8)',
-                            'rgba(54, 162, 235, 0.8)',
-                            'rgba(255, 206, 86, 0.8)',
-                            'rgba(75, 192, 192, 0.8)',
-                            'rgba(153, 102, 255, 0.8)',
-                            'rgba(255, 159, 64, 0.8)',
-                            'rgba(60, 179, 113, 0.8)',
-                            'rgba(255, 69, 0, 0.8)',
-                            'rgba(255, 165, 0, 0.8)',
-                            'rgba(128, 0, 128, 0.8)',
-                            'rgba(0, 128, 0, 0.8)',
-                            'rgba(128, 128, 0, 0.8)',
-                            'rgba(255, 192, 203, 0.8)',
-                            'rgba(255, 0, 255, 0.8)'
+                    type: 'pie',
+                    data: {
+                        labels: categories,
+                        datasets: [
+                            {
+                                label: 'Expenses by category',
+                                data: amounts,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.8)',
+                                    'rgba(54, 162, 235, 0.8)',
+                                    'rgba(255, 206, 86, 0.8)',
+                                    'rgba(75, 192, 192, 0.8)',
+                                    'rgba(153, 102, 255, 0.8)',
+                                    'rgba(255, 159, 64, 0.8)',
+                                    'rgba(60, 179, 113, 0.8)',
+                                    'rgba(255, 69, 0, 0.8)',
+                                    'rgba(255, 165, 0, 0.8)',
+                                    'rgba(128, 0, 128, 0.8)',
+                                    'rgba(0, 128, 0, 0.8)',
+                                    'rgba(128, 128, 0, 0.8)',
+                                    'rgba(255, 192, 203, 0.8)',
+                                    'rgba(255, 0, 255, 0.8)'
 
-                          ],
-                          hoverOffset: 4
-                      }
-                    ]
-                  }
+                                ],
+                                hoverOffset: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return categories[tooltipItem.dataIndex] + ': $' + amounts[tooltipItem.dataIndex];
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             );
             document.getElementById('income_expense').classList.add('close');
