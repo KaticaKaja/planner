@@ -131,7 +131,7 @@ export default function load() {
                 });
             })
         });
-        expense.innerHTML = '-$' + expense_amount;
+        expense.innerHTML = '$' + expense_amount;
         let check_if_budget_already_in_minus = false;
         if (budget.innerHTML.includes('-')) check_if_budget_already_in_minus = true;
         budget.innerHTML = '$' + (balance_budget.budget - expense_amount);
