@@ -147,6 +147,8 @@ export default function load() {
         const wrapper_title = document.querySelector('.todo_title');
         wrapper_title.value = '';
         wrapper_title.classList.remove('error');
+        const input_item = document.querySelector('.input_item');
+        inputItem.value = '';
         const items_container = document.querySelector('.items_container');
         items_container.innerHTML = '';
         const title = document.querySelector('.wrapper_todo_header .title');
@@ -172,7 +174,7 @@ export default function load() {
 
     function add_todo() {
         const title = document.querySelector('.todo_title');
-        const labels = document.querySelectorAll('.input_item');
+        const labels = document.querySelectorAll('.items_container .input_item');
         if (!title.value && todoWrapper.classList.contains('active')) title.classList.add('error');
         else title.classList.remove('error');
         if (!title.value) return;
