@@ -287,25 +287,22 @@ export default async function load() {
     //function update events when a day is active
     function updateEvents(date, m = undefined) {
         let events = '';
-        eventsArr.forEach((event) => {
-            if (
-                Number(date) === event.day &&
-                (!m && (month + 1 === event.month) || m === event.month) &&
-                year === event.year
-            ) {
-                events += `<div class='event'>
-                                <div class='ev_content'>
-                                    <div class='title'>
-                                        <i class='fas fa-circle'></i>
-                                        <h4 class='event-title'>${event.title}</h4>
-                                    </div>
-                                    <div class='event-time'>
-                                        <span class='event-time'>${event.time}</span>
-                                    </div>
+        const arranged = eventsArr.filter((event) =>  Number(date) === event.day &&
+        (!m && (month + 1 === event.month) || m === event.month) &&
+        year === event.year).sort((a,b) => Number(a.time.split('-')[0].split(':')[0]) - Number(b.time.split('-')[0].split(':')[0]));;
+        arranged.forEach((event) => {
+            events += `<div class='event'>
+                            <div class='ev_content'>
+                                <div class='title'>
+                                    <i class='fas fa-circle'></i>
+                                    <h4 class='event-title'>${event.title}</h4>
                                 </div>
-                                <i data-id="${event.id}" data-day="${event.day}" class='delete-event-btn fas fa-trash-can'></i>
-                            </div>`;
-            }
+                                <div class='event-time'>
+                                    <span class='event-time'>${event.time}</span>
+                                </div>
+                            </div>
+                            <i data-id="${event.id}" data-day="${event.day}" class='delete-event-btn fas fa-trash-can'></i>
+                        </div>`;
         });
         if (events === '') {
             events = `<div class='no-event'>
@@ -339,37 +336,6 @@ export default async function load() {
         if (eventTitle === '' || eventTimeFrom === '' || eventTimeTo === '') {
             Toastify({
                 text: "Please fill all the fields.",
-                duration: 3000,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "center", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
-                }
-            }).showToast();
-            return;
-        }
-
-        if (eventTimeTo.split(':')[0].charAt(0) === '0') {
-            Toastify({
-                text: "Time to is valid until 23:59",
-                duration: 3000,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "center", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
-                }
-            }).showToast();
-            return;
-        }
-
-        if (eventTimeFrom.split(':')[0] > eventTimeTo.split(':')[0] ||
-            (eventTimeFrom.split(':')[0] === eventTimeTo.split(':')[0] && eventTimeFrom.split(':')[1] >= eventTimeTo.split(':')[1])) {
-            Toastify({
-                text: "Time from should be before time to",
                 duration: 3000,
                 close: true,
                 gravity: "top", // `top` or `bottom`
