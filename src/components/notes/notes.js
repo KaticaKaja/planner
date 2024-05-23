@@ -1,8 +1,24 @@
 import './notes.scss';
+import { navigate } from '../../core/router';
 import { DB, uid } from '../../core/db.js';
 import Toastify from 'toastify-js';
 
 export default function load() {
+    if (localStorage.getItem('isLoggedIn') === null) {
+        navigate('/login');
+        Toastify({
+            text: 'You need to sign in first!',
+            duration: 3000,
+            close: true,
+            gravity: 'top', // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+            }
+        }).showToast();
+        return;
+    }
     const openWrapperBtn = document.querySelector('.open_wrapper'),
         addNoteBtn = document.querySelector('.add_note_btn'),
         noteWrapper = document.querySelector('.note_wrapper'),

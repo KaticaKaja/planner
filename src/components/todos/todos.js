@@ -1,8 +1,24 @@
 import './todos.scss';
+import { navigate } from '../../core/router';
 import { DB, uid } from '../../core/db.js';
 import Toastify from 'toastify-js';
 
 export default function load() {
+    if (localStorage.getItem('isLoggedIn') === null) {
+        navigate('/login');
+        Toastify({
+            text: 'You need to sign in first!',
+            duration: 3000,
+            close: true,
+            gravity: 'top', // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+            }
+        }).showToast();
+        return;
+    }
     const openWrapperBtn = document.querySelector('.open_wrapper'),
         addTodoBtn = document.querySelector('.add_todo_btn'),
         updateTodoBtn = document.querySelector('.update_todo_btn'),
@@ -291,7 +307,6 @@ export default function load() {
         list.innerHTML = '';
         if (conditions.search.value) {
             todos = todos.filter((t) => t.title.includes(conditions.search.value) || t.items.some(i => i.text.includes(conditions.search.value)));
-            console.log('todos', todos);
         }
         if (conditions.sort.value) {
             if (conditions.sort.value === 'newest') todos = todos.sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());

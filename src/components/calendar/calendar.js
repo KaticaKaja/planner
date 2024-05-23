@@ -21,8 +21,7 @@ export default async function load() {
         return;
     }
 
-    const calendar = document.querySelector('.calendar'),
-        date = document.querySelector('.date'),
+    const date = document.querySelector('.date'),
         daysContainer = document.querySelector('.days'),
         prev = document.querySelector('.prev'),
         next = document.querySelector('.next'),
@@ -243,7 +242,7 @@ export default async function load() {
                 //if clicked prev-date or next-date switch to that month
                 if (e.target.classList.contains('prev-date')) {
                     prevMonth(e.target.innerHTML);
-                    //add active to clicked day afte month is change
+                    //add active to clicked day after month is changed
                     setTimeout(() => {
                         //add active where no prev-date or next-date
                         const days = document.querySelectorAll('.day');
@@ -332,7 +331,7 @@ export default async function load() {
         }
     });
 
-    //function to add event to eventsArr
+    //function to add event
     addEventSubmit.addEventListener('click', () => {
         const eventTitle = addEventTitle.value;
         const eventTimeFrom = addEventFrom.value;

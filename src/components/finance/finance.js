@@ -5,7 +5,6 @@ import Toastify from 'toastify-js';
 import Chart from 'chart.js/auto';
 
 export default function load() {
-    const VALUTES = ['RSD', 'USD', 'EUR'];
     const EXPENSE_CATEGORIES = ['entertainment', 'household', 'food', 'apparel', 'gift', 'social life', 'health', 'transport', 'subscriptions', 'bank(credit, provisions...)', 'other'];
     const INCOME_CATEGORIES = ['salary', 'side hustle', 'other'];
     const MONTHS = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July',
