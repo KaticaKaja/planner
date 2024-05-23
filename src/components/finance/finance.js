@@ -132,11 +132,14 @@ export default function load() {
             })
         });
         expense.innerHTML = '-$' + expense_amount;
+        let check_if_budget_already_in_minus = false;
+        if (budget.innerHTML.includes('-')) check_if_budget_already_in_minus = true;
         budget.innerHTML = '$' + (balance_budget.budget - expense_amount);
         balance.innerHTML = '$' + (balance_budget.balance + income_amount - expense_amount);
         if (balance_budget.budget - expense_amount < 0) {
             budget.classList.add('minus');
             budget.classList.remove('plus');
+            if (check_if_budget_already_in_minus) return;
             setTimeout(() => {
                 Toastify({
                     text: 'You are over your monthly budget!',
