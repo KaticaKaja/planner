@@ -11,11 +11,12 @@ export default async function load() {
             text: "You need to sign in first!",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
         return;
@@ -190,17 +191,17 @@ export default async function load() {
     dateInput.addEventListener('input', (e) => {
         dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
         if (dateInput.value.length === 2) {
-          dateInput.value += '/';
+            dateInput.value += '/';
         }
         if (dateInput.value.length > 7) {
-          dateInput.value = dateInput.value.slice(0, 7);
+            dateInput.value = dateInput.value.slice(0, 7);
         }
         if (e.inputType === 'deleteContentBackward') {
-          if (dateInput.value.length === 3) {
-            dateInput.value = dateInput.value.slice(0, 2);
-          }
+            if (dateInput.value.length === 3) {
+                dateInput.value = dateInput.value.slice(0, 2);
+            }
         }
-      });
+    });
 
     gotoBtn.addEventListener('click', gotoDate);
 
@@ -218,11 +219,12 @@ export default async function load() {
             text: "Invalid date.",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-              background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
             }
         }).showToast();
     }
@@ -287,9 +289,9 @@ export default async function load() {
     //function update events when a day is active
     function updateEvents(date, m = undefined) {
         let events = '';
-        const arranged = eventsArr.filter((event) =>  Number(date) === event.day &&
-        (!m && (month + 1 === event.month) || m === event.month) &&
-        year === event.year).sort((a,b) => Number(a.time.split('-')[0].split(':')[0]) - Number(b.time.split('-')[0].split(':')[0]));;
+        const arranged = eventsArr.filter((event) => Number(date) === event.day &&
+            (!m && (month + 1 === event.month) || m === event.month) &&
+            year === event.year).sort((a, b) => Number(a.time.split('-')[0].split(':')[0]) - Number(b.time.split('-')[0].split(':')[0]));;
         arranged.forEach((event) => {
             events += `<div class='event'>
                             <div class='ev_content'>
@@ -338,11 +340,12 @@ export default async function load() {
                 text: "Please fill all the fields.",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                    background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
                 }
             }).showToast();
             return;
@@ -356,9 +359,9 @@ export default async function load() {
                 event.month === month + 1 &&
                 event.year === year
             ) {
-            if (event.title === eventTitle) {
-                eventExist = true;
-            }
+                if (event.title === eventTitle) {
+                    eventExist = true;
+                }
             }
         });
         if (eventExist) {
@@ -366,11 +369,12 @@ export default async function load() {
                 text: "Event already added.",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                    background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
                 }
             }).showToast();
             return;

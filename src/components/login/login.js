@@ -11,18 +11,19 @@ export default function load() {
             text: "You are already logged in!",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
         return;
     }
-        loadState();
-        document.login.addEventListener('change', getValue);
-        document.login.addEventListener('submit', onLogin);
+    loadState();
+    document.login.addEventListener('change', getValue);
+    document.login.addEventListener('submit', onLogin);
 }
 
 function loadState() {
@@ -91,11 +92,12 @@ async function onLogin(ev) {
             text: "You are successfully logged in!",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
         state.login.user = null;

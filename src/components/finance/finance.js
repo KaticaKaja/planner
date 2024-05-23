@@ -16,6 +16,7 @@ export default function load() {
             text: 'You need to sign in first!',
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: 'top', // `top` or `bottom`
             position: 'center', // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -71,6 +72,7 @@ export default function load() {
                 text: 'Please enter your desired monthly budget and your current balance.',
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: 'top', // `top` or `bottom`
                 position: 'center', // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -145,6 +147,7 @@ export default function load() {
                     text: 'You are over your monthly budget!',
                     duration: 2000,
                     close: true,
+                    className: 'toastify',
                     gravity: 'top', // `top` or `bottom`
                     position: 'center', // `left`, `center` or `right`
                     stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -206,6 +209,7 @@ export default function load() {
             text: `${form_id.split('_')[1].replace(/^\w/, (c) => c.toUpperCase())} added succesfully`,
             duration: 2000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -227,11 +231,11 @@ export default function load() {
             document.getElementById('toggle_history').className = 'fas fa-list';
             const aggregatedData = expenses.reduce((acc, expense) => {
                 if (!acc[expense.category]) {
-                  acc[expense.category] = 0;
+                    acc[expense.category] = 0;
                 }
                 acc[expense.category] += expense.amount;
                 return acc;
-              }, {});
+            }, {});
             const categories = Object.keys(aggregatedData);
             const amounts = Object.values(aggregatedData);
             mychart = new Chart(
@@ -274,7 +278,7 @@ export default function load() {
                             },
                             tooltip: {
                                 callbacks: {
-                                    label: function(tooltipItem) {
+                                    label: function (tooltipItem) {
                                         return categories[tooltipItem.dataIndex] + ': $' + amounts[tooltipItem.dataIndex];
                                     }
                                 }

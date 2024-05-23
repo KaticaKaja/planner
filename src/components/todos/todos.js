@@ -10,11 +10,12 @@ export default function load() {
             text: 'You need to sign in first!',
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: 'top', // `top` or `bottom`
             position: 'center', // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
             }
         }).showToast();
         return;
@@ -64,7 +65,7 @@ export default function load() {
         }
     });
 
-    search.addEventListener('keyup', async(e) => {
+    search.addEventListener('keyup', async (e) => {
         e.stopPropagation();
         conditions.search.value = e.target.value;
         update_list();
@@ -126,11 +127,12 @@ export default function load() {
                     text: 'Todo deleted succesfully',
                     duration: 2000,
                     close: true,
+                    className: 'toastify',
                     gravity: "top", // `top` or `bottom`
                     position: "center", // `left`, `center` or `right`
                     stopOnFocus: true, // Prevents dismissing of toast on hover
                     style: {
-                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
                     }
                 }).showToast();
             });
@@ -169,7 +171,7 @@ export default function load() {
 
         items_container.innerHTML += `
             <input type="text" class="input_item" data-item-id="${uid()}" data-item-done="${false}" value="${inputItem.value}"/>`;
-            inputItem.value = '';
+        inputItem.value = '';
     }
 
     function add_todo() {
@@ -192,11 +194,12 @@ export default function load() {
                 text: "Please enter at least one todo item",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                    background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
                 }
             }).showToast();
             return;
@@ -214,11 +217,12 @@ export default function load() {
                 text: 'Todo added succesfully',
                 duration: 2000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast();
         });
@@ -249,11 +253,12 @@ export default function load() {
                 text: "Please enter at least one todo item",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                    background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
                 }
             }).showToast();
             return;
@@ -265,6 +270,7 @@ export default function load() {
                 text: "You deleted this todo. This todo no longer exists.",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -289,11 +295,12 @@ export default function load() {
                 text: 'Todo updated succesfully',
                 duration: 2000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast();
         });
@@ -311,8 +318,8 @@ export default function load() {
             todos = todos.filter((t) => t.title.includes(conditions.search.value) || t.items.some(i => i.text.includes(conditions.search.value)));
         }
         if (conditions.sort.value) {
-            if (conditions.sort.value === 'newest') todos = todos.sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-            if (conditions.sort.value === 'oldest') todos = todos.sort((a,b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+            if (conditions.sort.value === 'newest') todos = todos.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+            if (conditions.sort.value === 'oldest') todos = todos.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         }
         if (conditions.search.value && todos.length === 0) {
             list.innerHTML = '<h2>No todos found with this search</h2>'
@@ -340,7 +347,7 @@ export default function load() {
                     ${todoItems}
                 </div>
                 <div class="todo_footer">
-                    <span class="timestamp">${t.timestamp.toString().split(' ')[0]}, ${t.timestamp.getDate()}. ${t.timestamp.getMonth() + 1}. ${t.timestamp.getFullYear()}. at ${hours < 10 ? '0' +  hours: hours}:${minutes < 10 ? '0' +  minutes: minutes}</span>
+                    <span class="timestamp">${t.timestamp.toString().split(' ')[0]}, ${t.timestamp.getDate()}. ${t.timestamp.getMonth() + 1}. ${t.timestamp.getFullYear()}. at ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}</span>
                 </div>
             </div>`;
         });

@@ -42,11 +42,12 @@ async function upcomingEventToastify() {
                         text: "You have an upcoming event today!" + '\n"' + event.title + '" is due today at ' + event.time.split('-')[0],
                         duration: 4000,
                         close: true,
+                        className: 'toastify',
                         gravity: "top", // `top` or `bottom`
                         position: "center", // `left`, `center` or `right`
                         stopOnFocus: true, // Prevents dismissing of toast on hover
                         style: {
-                          background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
                         }
                     }).showToast();
                 }

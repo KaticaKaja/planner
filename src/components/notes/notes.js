@@ -10,11 +10,12 @@ export default function load() {
             text: 'You need to sign in first!',
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: 'top', // `top` or `bottom`
             position: 'center', // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
             }
         }).showToast();
         return;
@@ -61,7 +62,7 @@ export default function load() {
         }
     });
 
-    search.addEventListener('keyup', async(e) => {
+    search.addEventListener('keyup', async (e) => {
         e.stopPropagation();
         conditions.search.value = e.target.value;
         update_list();
@@ -97,6 +98,7 @@ export default function load() {
                     text: 'Note deleted succesfully',
                     duration: 2000,
                     close: true,
+                    className: 'toastify',
                     gravity: "top", // `top` or `bottom`
                     position: "center", // `left`, `center` or `right`
                     stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -151,11 +153,12 @@ export default function load() {
                 text: 'Note added succesfully',
                 duration: 2000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast();
         });
@@ -173,8 +176,8 @@ export default function load() {
             notes = notes.filter((n) => n.title.includes(conditions.search.value) || n.text.includes(conditions.search.value));
         }
         if (conditions.sort.value) {
-            if (conditions.sort.value === 'newest') notes = notes.sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-            if (conditions.sort.value === 'oldest') notes = notes.sort((a,b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+            if (conditions.sort.value === 'newest') notes = notes.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+            if (conditions.sort.value === 'oldest') notes = notes.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         }
         if (conditions.search.value && notes.length === 0) {
             list.innerHTML = '<h2>No notes found with this search</h2>'
@@ -194,7 +197,7 @@ export default function load() {
                     <i data-id="${n.id}" class="fas fa-trash delete"></i>
                 </div>
                 <div class="note_body">${n.text}</div>
-                <div class="note_footer"><span class="timestamp">${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}. at ${hours < 10 ? '0' +  hours: hours}:${minutes < 10 ? '0' +  minutes: minutes}</span></div>
+                <div class="note_footer"><span class="timestamp">${n.timestamp.toString().split(' ')[0]}, ${n.timestamp.getDate()}. ${n.timestamp.getMonth() + 1}. ${n.timestamp.getFullYear()}. at ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}</span></div>
             </div>`;
         });
     }
@@ -221,6 +224,7 @@ export default function load() {
                 text: "You deleted this note. This note no longer exists.",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -239,6 +243,7 @@ export default function load() {
                 text: 'Note updated succesfully',
                 duration: 2000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover

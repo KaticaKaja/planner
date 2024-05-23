@@ -11,11 +11,12 @@ export default function load() {
             text: "You are already logged in!",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
         return;
@@ -64,11 +65,12 @@ async function validatedUser(ev) {
                 text: "There was an error on our end, try again later.",
                 duration: 3000,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                    background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
                 }
             }).showToast();
             console.log('[' + error.name + '] ' + error.message);
@@ -81,11 +83,12 @@ async function validatedUser(ev) {
                 destination: "/login",
                 newWindow: false,
                 close: true,
+                className: 'toastify',
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast();
             delete state.register.user;
@@ -141,24 +144,26 @@ async function onRegister(ev) {
             text: "You are successfully registered!",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
     }).catch((err) => {
-        console.log('Error on user add event: '+ err);
+        console.log('Error on user add event: ' + err);
         Toastify({
             text: "Try again later, there was a problem on our end.",
             duration: 3000,
             close: true,
+            className: 'toastify',
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-              background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
+                background: "linear-gradient(to right, rgb(204, 0, 0), rgb(200 130 130))",
             }
         }).showToast();
     });
