@@ -92,7 +92,7 @@ export default function load() {
                     if (item.id === itemId) return { ...item, done: done };
                     else return item
                 }),
-                timestamp: new Date()
+                timestamp: todo.timestamp
             }
 
             DB.update('todos', updated_todo, localStorage.getItem('user'));
