@@ -79,6 +79,7 @@ export default function load() {
 
     list.addEventListener('click', async (e) => {
         e.stopPropagation();
+        wrapper_reset();
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
             const todoId = e.target.dataset.todoId;
             const itemId = e.target.dataset.itemId;
@@ -149,8 +150,8 @@ export default function load() {
         const wrapper_title = document.querySelector('.todo_title');
         wrapper_title.value = '';
         wrapper_title.classList.remove('error');
-        const input_item = document.querySelector('.input_item');
-        inputItem.value = '';
+        const input_item = document.querySelector('.add_item .input_item');
+        input_item.value = '';
         const items_container = document.querySelector('.items_container');
         items_container.innerHTML = '';
         const title = document.querySelector('.wrapper_todo_header .title');
@@ -227,15 +228,14 @@ export default function load() {
             }).showToast();
         });
 
-        document.querySelector('.todo_title').value = '';
-        document.querySelector('.items_container').innerHTML = '';
+        wrapper_reset();
         todoWrapper.classList.remove('active');
         update_list();
     }
 
     async function update_todo(e) {
         const title = document.querySelector('.todo_title');
-        const labels = document.querySelectorAll('.input_item');
+        const labels = document.querySelectorAll('.items_container .input_item');
         if (!title.value && todoWrapper.classList.contains('active')) title.classList.add('error');
         else title.classList.remove('error');
         if (!title.value) return;
