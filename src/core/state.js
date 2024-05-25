@@ -2,7 +2,7 @@ export const state = {
     register: {},
     login: {},
     todos: {},
-    note: {},
+    notes: {},
     finance: {},
     calendar: {}
 };

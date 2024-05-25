@@ -2,6 +2,7 @@ import './todos.scss';
 import { navigate } from '../../core/router';
 import { DB, uid } from '../../core/db.js';
 import Toastify from 'toastify-js';
+import { state } from '../../core/state.js';
 
 export default function load() {
     if (localStorage.getItem('isLoggedIn') === null) {
@@ -29,7 +30,8 @@ export default function load() {
         inputItem = document.querySelector('.input_item'),
         list = document.querySelector('#list'),
         search = document.querySelector('#search'),
-        sort = document.querySelector('#sort');
+        sort = document.querySelector('#sort'),
+        items_container = document.querySelector('.items_container');
 
     let conditions = {
         search: {
@@ -109,9 +111,11 @@ export default function load() {
             wrapper_title.value = todo.title;
             todo.items.forEach((item) => {
                 items_container.innerHTML += `
-                <input type="text" class="input_item" data-item-id="${item.id}" data-item-done="${item.done}" value="${item.text}"/>
-            `;
+                    <input type="text" class="input_item" data-item-id="${item.id}" data-item-done="${item.done}" value="${item.text}"/>
+                `;
             });
+
+            state.todos.items = todo.items;
 
             title.innerHTML = 'Edit this todo';
             addTodoBtn.classList.remove('open');
@@ -152,6 +156,7 @@ export default function load() {
         wrapper_title.classList.remove('error');
         const input_item = document.querySelector('.add_item .input_item');
         input_item.value = '';
+        if (input_item.classList.contains('error')) input_item.classList.remove('error');
         const items_container = document.querySelector('.items_container');
         items_container.innerHTML = '';
         const title = document.querySelector('.wrapper_todo_header .title');
@@ -160,7 +165,16 @@ export default function load() {
         addTodoBtn.classList.add('open');
         updateTodoBtn.classList.remove('open');
         updateTodoBtn.classList.add('close');
+        state.todos.items = [];
     }
+
+    items_container.addEventListener('change', async (e) => {
+        if (e.target.tagName === 'INPUT') {
+            state.todos.items.forEach((item) => {
+                if (item.id === e.target.dataset.itemId) item.text = e.target.value;
+            });
+        }
+    });
 
     function add_item() {
         const items_container = document.querySelector('.items_container');
@@ -170,8 +184,21 @@ export default function load() {
             return;
         } else inputItem.classList.remove('error');
 
+        items_container.innerHTML = '';
+        state.todos.items.forEach((i) => {
+            items_container.innerHTML += `
+                <input type="text" class="input_item" data-item-id="${i.id}" data-item-done="${i.done}" value="${i.text}"/>
+            `;
+        })
+
+        const item_id = uid();
+        state.todos.items.push({
+            id: item_id,
+            text: inputItem.value,
+            done: false
+        });
         items_container.innerHTML += `
-            <input type="text" class="input_item" data-item-id="${uid()}" data-item-done="${false}" value="${inputItem.value}"/>`;
+            <input type="text" class="input_item" data-item-id="${item_id}" data-item-done="${false}" value="${inputItem.value}"/>`;
         inputItem.value = '';
     }
 
