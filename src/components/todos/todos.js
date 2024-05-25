@@ -81,7 +81,6 @@ export default function load() {
 
     list.addEventListener('click', async (e) => {
         e.stopPropagation();
-        wrapper_reset();
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
             const todoId = e.target.dataset.todoId;
             const itemId = e.target.dataset.itemId;
