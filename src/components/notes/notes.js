@@ -76,6 +76,7 @@ export default function load() {
 
     list.addEventListener('click', async (e) => {
         e.stopPropagation();
+        wrapper_reset();
         if (!e.target.matches('.delete') && e.target.closest('.note')) {
             noteWrapper.classList.add('active');
             const wrapper_title = document.querySelector('.note_title');
