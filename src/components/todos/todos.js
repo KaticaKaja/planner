@@ -341,7 +341,7 @@ export default function load() {
         let todos = await DB.getAll('todos', undefined, localStorage.getItem('user'));
         list.innerHTML = '';
         if (conditions.search.value) {
-            todos = todos.filter((t) => t.title.includes(conditions.search.value) || t.items.some(i => i.text.includes(conditions.search.value)));
+            todos = todos.filter((t) => t.title.toLowerCase().includes(conditions.search.value.toLowerCase()) || t.items.some(i => i.text.toLowerCase().includes(conditions.search.value.toLowerCase())));
         }
         if (conditions.sort.value) {
             if (conditions.sort.value === 'newest') todos = todos.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
