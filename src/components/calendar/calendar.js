@@ -91,13 +91,13 @@ export default async function load() {
                 ) {
                     event = true;
                     if (event) {
-                        days += `<div data-month='${prevMonth - 1}' class='day event prev-date'>${prevDays - x + 1}</div>`;
+                        days += `<div data-month='${prevMonth}' class='day event prev-date'>${prevDays - x + 1}</div>`;
                         skip = true;
                     }
                 }
             });
             if (skip) continue;
-            days += `<div data-month='${prevMonth - 1}' class='day prev-date'>${prevDays - x + 1}</div>`;
+            days += `<div data-month='${prevMonth}' class='day prev-date'>${prevDays - x + 1}</div>`;
         }
 
         for (let i = 1; i <= lastDate; i++) {
@@ -145,13 +145,13 @@ export default async function load() {
                 ) {
                     event = true;
                     if (event) {
-                        days += `<div data-month='${nextMonth - 1}' class='day event next-date'>${j}</div>`;
+                        days += `<div data-month='${nextMonth}' class='day event next-date'>${j}</div>`;
                         skip = true;
                     }
                 }
             });
             if (skip) continue;
-            days += `<div data-month='${nextMonth - 1}' class='day next-date'>${j}</div>`;
+            days += `<div data-month='${nextMonth}' class='day next-date'>${j}</div>`;
         }
         daysContainer.innerHTML = days;
         addListener();
@@ -279,11 +279,11 @@ export default async function load() {
 
     //function get active day day name and date and update eventday eventdate
     function getActiveDay(date, m = undefined) {
-        const day = new Date(year, m || month, date);
+        const day = new Date(year, (Number(m) - 1) >= 0 ? Number(m) - 1 : month, date);
         const dayName = day.toString().split(' ')[0];
         eventDay.innerHTML = dayName;
         eventDate.dataset.month = Number(m);
-        eventDate.innerHTML = date + ' ' + months[Number(m) || month] + ' ' + year;
+        eventDate.innerHTML = date + ' ' + months[(Number(m) - 1) >= 0 ? Number(m) - 1 : month] + ' ' + year;
     }
 
     //function update events when a day is active
@@ -388,7 +388,7 @@ export default async function load() {
 
         eventsArr.push({
             id: id,
-            day: activeDay,
+            day: Number(activeDay),
             month: Number(eventDate.dataset.month) || month + 1,
             year: year,
             title: newEvent.title,
@@ -396,7 +396,7 @@ export default async function load() {
         });
         DB.add('events', {
             id: id,
-            day: activeDay,
+            day: Number(activeDay),
             month: Number(eventDate.dataset.month) || month + 1,
             year: year,
             title: newEvent.title,
